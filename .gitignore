@@ -1,3 +1,12 @@
+# Bower components
+app/bower_components
+
+# Node modules
+node_modules
+
+# Sass Cache
+.sass-cache
+
 #################
 ## Eclipse
 #################
