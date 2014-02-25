@@ -2,7 +2,7 @@
 
 <div>
   <h1>NYC Restaurant Browser</h1>
-  <p>Showing {{(output.venuesMeta | byBoroughAndCategory:input).length}} results</p>
+  <p>Showing {{(output.venuesMeta | byBoroughAndCategoryAndName:input).length}} results</p>
 </div>
 
 <div class='form'>
@@ -30,15 +30,15 @@
           chosen
           allow-single-deselect="true"
           name="nameSelector"
-          data-placeholder="Filter by name in borough"
+          data-placeholder="Filter by name"
           data-ng-model="input.nameSelector"
-          ng-options="meta.venue.name for meta in output.venuesMeta[input.boroughSelector]">
+          ng-options="meta.venue.name as meta.venue.name for meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
     <option value=""></option>
   </select>
 </div>
 
 <div class="row marketing">
-  <div ng-repeat="meta in output.venuesMeta | byBoroughAndCategory:input">
+  <div ng-repeat="meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
       <h4>{{meta.venue.name}}</h4>
       <div><span>Borough: {{meta.venue.location.city | upcase}}</span></div>
       <span>Category: {{meta.venue.categories[0].shortName}}</span></div>

@@ -4,10 +4,11 @@ angular.module('myApp')
 .filter('upcase', function() {
   return upcase;
 })
-.filter('byBoroughAndCategory', function() {
+.filter('byBoroughAndCategoryAndName', function() {
   return function(venuesMeta, input) {
     var borough = input.boroughSelector;
     var category = input.categorySelector;
+    var name = input.nameSelector;
 
     if (borough) {
       venuesMeta = filterByBorough(venuesMeta, borough);
@@ -15,6 +16,10 @@ angular.module('myApp')
 
     if (venuesMeta.length && category) {
       venuesMeta = filterByCategory(venuesMeta, category);
+    }
+
+    if (venuesMeta.length && name) {
+      venuesMeta = filterByName(venuesMeta, name); 
     }
 
     return venuesMeta;
@@ -38,6 +43,18 @@ function filterByCategory(venuesMeta, category) {
 
   return venuesMeta.filter(function(meta, index, array) {
     return meta.venue.categories[0].shortName.toLowerCase() === category;
+  });
+}
+
+function filterByName(venuesMeta, name) {
+  if (!name || name.length < 2) {
+    return venuesMeta;
+  }
+
+  return venuesMeta.filter(function(meta, index, array) {
+    var lhs = meta.venue.name.toLowerCase();
+    var rhs = name.toLowerCase();
+    return lhs.indexOf(rhs) !== -1;
   });
 }
 
