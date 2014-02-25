@@ -11,8 +11,18 @@
           multiple=""
           name="boroughSelector"
           data-placeholder="Filter by borough"
-          data-ng-model="boroughSelector"
+          data-ng-model="input.boroughSelector"
           ng-options="b as b | upcase for b in input.boroughs">
+    <option value=""></option>
+  </select>
+
+  <select class="col-sm-4"
+          chosen=""
+          multiple=""
+          name="categorySelector"
+          data-placeholder="Filter by category"
+          data-ng-model="input.categorySelector"
+          ng-options="c as c | upcase for c in input.categories">
     <option value=""></option>
   </select>
 </div>
