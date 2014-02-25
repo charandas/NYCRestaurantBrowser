@@ -17,7 +17,6 @@ angular.module('myApp')
 
     // Local instances for code-readability
     var boroughs = $scope.input.boroughs;
-    var categories = $scope.input.categories;
 
     // Fetch the venues using the service that returns an ngResource
     $scope.input.venuesResource = venueService().get(function() {
@@ -25,55 +24,61 @@ angular.module('myApp')
       // These $watch calls are performed on selectors in the DOM
 
       $scope.$watch ('input.boroughSelector', function(newBoroughs) {
-        if (newBoroughs && newBoroughs.length) {
-          $scope.output.venuesMeta = {};
-
-          for (var i = 0; i < newBoroughs.length; i++) {
-            $scope.output.venuesMeta[newBoroughs[i]] = angular.copy($scope.input.venuesResource[newBoroughs[i]].response.groups[0].items);
-          }
+        if ($scope.input.categorySelector) {
+          resetVenuesMetaForCategory($scope, newBoroughs, $scope.input.categorySelector);
         } else {
-          // Select all boroughs
-          for (var i = 0; i < boroughs.length; i++) {
-            $scope.output.venuesMeta[boroughs[i]] = angular.copy($scope.input.venuesResource[boroughs[i]].response.groups[0].items);
-          }
-        } 
+          resetVenuesMeta($scope, newBoroughs);
+        }
       });
 
       $scope.$watch('input.categorySelector', function(newCategories) {
         // First we restore state for selected boroughs, then filter by category
         if (newCategories && newCategories.length) {
-          if ($scope.input.boroughsSelector) {
-            // Look for any current borough selection
-            var currentBoroughs = $scope.input.boroughSelector;
-
-            $scope.output.venuesMeta = {};
-
-            for (var i = 0; i < currentBoroughs.length; i++) {
-              var newItems = angular.copy($scope.input.venuesResource[currentBoroughs[i]].response.groups[0].items);
-
-              for(var j = newItems.length - 1; j >= 0; j--) {
-                if(newCategories.indexOf(newItems[j].venue.categories[0].shortName.toLowerCase()) === -1) {
-                  newItems.splice(j, 1);
-                }
-              }
-              $scope.output.venuesMeta[currentBoroughs[i]] = newItems;
-            }
-          } else {
-            // Select all boroughs
-            for (var i = 0; i < boroughs.length; i++) {
-              var newItems = angular.copy($scope.input.venuesResource[boroughs[i]].response.groups[0].items);
-
-              for(var j = newItems.length - 1; j >= 0; j--) {
-                if(newCategories.indexOf(newItems[j].venue.categories[0].shortName.toLowerCase()) === -1) {
-                  newItems.splice(j, 1);
-                }
-              }
-              $scope.output.venuesMeta[boroughs[i]] = newItems;
-            }
-          }
+          resetVenuesMetaForCategory($scope, $scope.input.boroughSelector, newCategories)
+        } else {
+          resetVenuesMeta($scope, $scope.input.boroughSelector);
         }
       });
     });
+
+    // Private functions
+    function resetVenuesMeta($scope, boroughs) {
+      var _boroughs;
+
+      if (boroughs && boroughs.length) {
+        _boroughs = boroughs;
+      } else {
+        _boroughs = $scope.input.boroughs;
+      }
+
+      $scope.output.venuesMeta = {};
+
+      for (var i = 0; i < _boroughs.length; i++) {
+        $scope.output.venuesMeta[_boroughs[i]] = angular.copy($scope.input.venuesResource[_boroughs[i]].response.groups[0].items);
+      }
+    }
+
+    function resetVenuesMetaForCategory($scope, boroughs, newCategories) {
+      var _boroughs;
+      if (boroughs) {
+        _boroughs = boroughs;
+      } else {
+        _boroughs = $scope.input.boroughs;
+      }
+
+      $scope.output.venuesMeta = {};
+
+      for (var i = 0; i < _boroughs.length; i++) {
+        var newItems = angular.copy($scope.input.venuesResource[_boroughs[i]].response.groups[0].items);
+
+        for(var j = newItems.length - 1; j >= 0; j--) {
+          if(newCategories.indexOf(newItems[j].venue.categories[0].shortName.toLowerCase()) === -1) {
+            newItems.splice(j, 1);
+          }
+        }
+        $scope.output.venuesMeta[_boroughs[i]] = newItems;
+      }
+    }
 
     // Computed Properties
     $scope.venuesCount = function() {
