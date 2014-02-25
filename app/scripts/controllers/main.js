@@ -6,7 +6,7 @@ angular.module('myApp')
     $scope.input = {
       venuesResource: {},
       boroughs: ['bronx', 'brooklyn', 'queens', 'manhattan'],
-      categories: ['asian', 'sandwitches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
+      categories: ['asian', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
                    'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza']
     };

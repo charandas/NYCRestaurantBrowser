@@ -5,49 +5,52 @@
   <p>Showing {{(output.venuesMeta | byBoroughAndCategoryAndName:input).length}} results</p>
 </div>
 
-<div class='form'>
-  <select class="col-sm-4"
-          chosen
-          allow-single-deselect="true"
-          name="boroughSelector"
-          data-placeholder="Filter by borough"
-          data-ng-model="input.boroughSelector"
-          ng-options="b as b | upcase for b in input.boroughs">
-    <option value=""></option>
-  </select>
+<div class="row">
+  <div class='col-sm-6 form-group'>
+    <select class="col-sm-6"
+            chosen
+            allow-single-deselect="true"
+            name="boroughSelector"
+            data-placeholder="Filter by borough"
+            data-ng-model="input.boroughSelector"
+            ng-options="b as b | upcase for b in input.boroughs">
+      <option value=""></option>
+    </select>
 
-  <select class="col-sm-4"
-          chosen
-          allow-single-deselect="true"
-          name="categorySelector"
-          data-placeholder="Filter by category"
-          data-ng-model="input.categorySelector"
-          ng-options="c as c | upcase for c in input.categories">
-    <option value=""></option>
-  </select>
+    <select class="col-sm-6"
+            chosen
+            allow-single-deselect="true"
+            name="categorySelector"
+            data-placeholder="Filter by category"
+            data-ng-model="input.categorySelector"
+            ng-options="c as c | upcase for c in input.categories">
+      <option value=""></option>
+    </select>
 
-  <select class="col-sm-4"
-          chosen
-          allow-single-deselect="true"
-          name="nameSelector"
-          search-contains="true"
-          data-placeholder="Filter by name"
-          data-ng-model="input.nameSelector"
-          ng-options="meta.venue.name as meta.venue.name for meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
-    <option value=""></option>
-  </select>
-</div>
+    <select class="col-sm-6"
+            chosen
+            allow-single-deselect="true"
+            name="nameSelector"
+            search-contains="true"
+            data-placeholder="Filter by name"
+            data-ng-model="input.nameSelector"
+            ng-options="meta.venue.name as meta.venue.name for meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
+      <option value=""></option>
+    </select>
+  </div>
 
-<div class="row marketing">
-  <div ng-repeat="meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
-      <h4>{{meta.venue.name}}</h4>
-      <img ng-src={{meta.primary_photo}} style="width: 612px; height: 612px;"/>
-      <div><span>Borough: {{meta.venue.location.city | upcase}}</span></div>
-      <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
-      <!-- -->
+  <div class="marketing col-sm-6">
+    <div ng-repeat="meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
+        <div>
+          <h4>
+            <span>{{meta.venue.name}}</span>
+            <span class='text-muted'>
+              in <strong>{{meta.venue.location.city | upcase}}</strong> in <strong>{{meta.venue.categories[0].shortName}}</strong> category
+            </span>
+          </h4>
+        </div>
+        <img ng-src={{meta.primary_photo}} style="width: 306px; height: 306px;"/>
+    </div>
   </div>
 </div>
 
-<div class="footer">
-  <p>By @kbdaitch for CityCoridoor</p>
-</div>
