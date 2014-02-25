@@ -30,6 +30,7 @@
           chosen
           allow-single-deselect="true"
           name="nameSelector"
+          search-contains="true"
           data-placeholder="Filter by name"
           data-ng-model="input.nameSelector"
           ng-options="meta.venue.name as meta.venue.name for meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
@@ -40,8 +41,10 @@
 <div class="row marketing">
   <div ng-repeat="meta in output.venuesMeta | byBoroughAndCategoryAndName:input">
       <h4>{{meta.venue.name}}</h4>
+      <img ng-src={{meta.primary_photo}} style="width: 612px; height: 612px;"/>
       <div><span>Borough: {{meta.venue.location.city | upcase}}</span></div>
       <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
+      <!-- -->
   </div>
 </div>
 
