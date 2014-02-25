@@ -7,8 +7,8 @@
 
 <div class='form'>
   <select class="col-sm-4"
-          chosen=""
-          multiple=""
+          chosen
+          multiple
           name="boroughSelector"
           data-placeholder="Filter by borough"
           data-ng-model="input.boroughSelector"
@@ -17,12 +17,22 @@
   </select>
 
   <select class="col-sm-4"
-          chosen=""
-          multiple=""
+          chosen
+          multiple
           name="categorySelector"
           data-placeholder="Filter by category"
           data-ng-model="input.categorySelector"
           ng-options="c as c | upcase for c in input.categories">
+    <option value=""></option>
+  </select>
+
+  <select class="col-sm-4"
+          chosen
+          allow-single-deselect="true"
+          name="nameSelector"
+          data-placeholder="Filter by name in borough"
+          data-ng-model="input.nameSelector"
+          ng-options="meta.venue.name for meta in output.venuesMeta[input.boroughSelector]">
     <option value=""></option>
   </select>
 </div>
