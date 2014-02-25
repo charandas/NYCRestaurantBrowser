@@ -6,16 +6,24 @@
 </div>
 
 <div class='form'>
-  <select class="col-sm-4" chosen="" data-placeholder="Filter by borough" ng-model="borough" allow-single-deselect="true" ng-options="b as b | upcase for b in boroughs">
+  <select class="col-sm-4" 
+          chosen
+          name="boroughFilter"
+          data-placeholder="Filter by borough"
+          data-ng-model="borough" 
+          allow-single-deselect="true"
+          ng-options="b as b | upcase for b in boroughs">
     <option value=""></option>
   </select>
 </div>
 
 <div class="row marketing">
-  <div ng-repeat="meta in venuesMeta">
-      <h4>{{meta.venue.name}}</h4>
-      <div><span>Borough: {{borough | upcase}}</span></div>
-      <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
+  <div ng-repeat="boroughIter in boroughs">
+    <div ng-repeat="meta in venuesMeta[boroughIter]">
+        <h4>{{meta.venue.name}}</h4>
+        <div><span>Borough: {{boroughIter | upcase}}</span></div>
+        <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
+    </div>
   </div>
 </div>
 
