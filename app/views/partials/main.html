@@ -6,20 +6,20 @@
 </div>
 
 <div class='form'>
-  <select class="col-sm-4" 
-          chosen
-          name="boroughFilter"
+  <select class="col-sm-4"
+          chosen=""
+          multiple=""
+          name="boroughSelector"
           data-placeholder="Filter by borough"
-          data-ng-model="borough" 
-          allow-single-deselect="true"
-          ng-options="b as b | upcase for b in boroughs">
+          data-ng-model="boroughSelector"
+          ng-options="b as b | upcase for b in input.boroughs">
     <option value=""></option>
   </select>
 </div>
 
 <div class="row marketing">
-  <div ng-repeat="boroughIter in boroughs">
-    <div ng-repeat="meta in venuesMeta[boroughIter]">
+  <div ng-repeat="boroughIter in input.boroughs">
+    <div ng-repeat="meta in output.venuesMeta[boroughIter]">
         <h4>{{meta.venue.name}}</h4>
         <div><span>Borough: {{boroughIter | upcase}}</span></div>
         <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
