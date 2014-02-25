@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('karanNycrestaurantBrowserApp')
+angular.module('myApp')
   .controller('NavbarCtrl', function ($scope, $location) {
     $scope.menu = [{
       'title': 'Home',

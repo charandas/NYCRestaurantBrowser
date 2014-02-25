@@ -1,21 +1,24 @@
 <div ng-include="'partials/navbar'"></div>
 
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
+<div>
+  <h1>NYC Restaurant Browser</h1>
   <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
 </div>
 
+<div class='form'>
+  <select class="col-sm-4" chosen="" data-placeholder="Filter by borough" ng-model="borough" allow-single-deselect="true" ng-options="b as b | upcase for b in boroughs">
+    <option value=""></option>
+  </select>
+</div>
+
 <div class="row marketing">
-  <div ng-repeat="thing in awesomeThings">
-      <h4>{{thing.name}}</h4>
-      <p>{{thing.info}}</p>
+  <div ng-repeat="meta in venuesMeta">
+      <h4>{{meta.venue.name}}</h4>
+      <div><span>Borough: {{borough | upcase}}</span></div>
+      <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
   </div>
 </div>
 
 <div class="footer">
-  <p>♥ from the Yeoman team</p>
+  <p>By @kbdaitch for CityCoridoor</p>
 </div>

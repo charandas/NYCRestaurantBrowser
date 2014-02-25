@@ -2,6 +2,8 @@ $icon-font-path: "/bower_components/bootstrap-sass/fonts/";
 
 @import 'bootstrap-sass/lib/bootstrap';
 
+@import 'chosen/bootstrap';
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;

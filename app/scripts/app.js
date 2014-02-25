@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('karanNycrestaurantBrowserApp', [
+angular.module('myApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute'
+  'ngRoute',
+  'localytics.directives'
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
