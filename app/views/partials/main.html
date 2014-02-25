@@ -2,13 +2,13 @@
 
 <div>
   <h1>NYC Restaurant Browser</h1>
-  <p>Showing {{venuesCount()}} results</p>
+  <p>Showing {{(output.venuesMeta | byBoroughAndCategory:input).length}} results</p>
 </div>
 
 <div class='form'>
   <select class="col-sm-4"
           chosen
-          multiple
+          allow-single-deselect="true"
           name="boroughSelector"
           data-placeholder="Filter by borough"
           data-ng-model="input.boroughSelector"
@@ -18,7 +18,7 @@
 
   <select class="col-sm-4"
           chosen
-          multiple
+          allow-single-deselect="true"
           name="categorySelector"
           data-placeholder="Filter by category"
           data-ng-model="input.categorySelector"
@@ -38,12 +38,10 @@
 </div>
 
 <div class="row marketing">
-  <div ng-repeat="boroughIter in input.boroughs">
-    <div ng-repeat="meta in output.venuesMeta[boroughIter]">
-        <h4>{{meta.venue.name}}</h4>
-        <div><span>Borough: {{boroughIter | upcase}}</span></div>
-        <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
-    </div>
+  <div ng-repeat="meta in output.venuesMeta | byBoroughAndCategory:input">
+      <h4>{{meta.venue.name}}</h4>
+      <div><span>Borough: {{meta.venue.location.city | upcase}}</span></div>
+      <span>Category: {{meta.venue.categories[0].shortName}}</span></div>
   </div>
 </div>
 
