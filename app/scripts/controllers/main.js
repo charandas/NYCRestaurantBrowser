@@ -18,7 +18,7 @@ angular.module('myApp')
           // Clear-out any unselected boroughs
           for (var i = 0; i < $scope.boroughs.length; i++) {
             if ($scope.boroughs[i] != newBorough) {
-              $scope.venuesMeta[$scope.boroughs[i]] = {};
+              $scope.venuesMeta[$scope.boroughs[i]] = [];
             }
           }
           // Select newly selected borough
@@ -31,5 +31,15 @@ angular.module('myApp')
         }
       });
     });
+
+    $scope.venuesCount = function() {
+      var count = 0;
+      for (var i = 0; i < $scope.boroughs.length; i++) {
+        if ($scope.venuesMeta[$scope.boroughs[i]]) {
+          count += $scope.venuesMeta[$scope.boroughs[i]].length;
+        }
+      }
+      return count;
+    }
   }
   ]));
