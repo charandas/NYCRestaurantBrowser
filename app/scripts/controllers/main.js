@@ -5,10 +5,10 @@ angular.module('myApp')
     
     $scope.input = {
       venuesResource: {},
-      boroughs: ['bronx', 'brooklyn', 'queens', 'manhattan'],
+      boroughs: ['bronx', 'brooklyn', 'manhattan', 'queens'],
       categories: ['asian', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
-                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza']
+                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort(casecmp)
     };
 
     $scope.output = {
@@ -37,3 +37,9 @@ angular.module('myApp')
     }
   }
   ]));
+
+function casecmp(a, b) {
+  if (a.toLowerCase() < b.toLowerCase()) return -1;
+  if (a.toLowerCase() > b.toLowerCase()) return 1;
+  return 0;
+}

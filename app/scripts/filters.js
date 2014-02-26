@@ -42,7 +42,7 @@ function filterByCategory(venuesMeta, category) {
   }
 
   return venuesMeta.filter(function(meta, index, array) {
-    return meta.venue.categories[0].shortName.toLowerCase() === category;
+    return meta.venue.categories[0].shortName.toLowerCase() === category.toLowerCase();
   });
 }
 
