@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myApp')
-  .controller('MainCtrl', (['$scope', '$http', 'venueService', '$filter', 
-    function ($scope, $http, venueService, $filter) {
+  .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter', 
+    function ($scope, $http, $resource, $filter) {
 
     // Source the filters
     var boroughFilter = $filter('boroughFilter');
@@ -11,7 +11,6 @@ angular.module('myApp')
     var paginateFilter = $filter('paginateFilter');
     
     $scope.input = {
-      venuesResource: {},
       boroughs: ['bronx', 'brooklyn', 'manhattan', 'queens'],
       categories: ['asian', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
@@ -87,11 +86,8 @@ angular.module('myApp')
     // Local instances for code-readability
     var boroughs = $scope.input.boroughs;
 
-    // Fetch the venues using the service that returns an ngResource
-    $scope.input.venuesResource = venueService().query(function() {
-      // On resolved promise, setup initial state
-      $scope.output.venuesMeta = $scope.input.venuesResource;      
-    });
+    // Fetch the venues
+    $scope.output.venuesMeta = $resource('api/venues', {}, {}).query();
 
     $scope.$watch('output.groupedResults().length', function(newResults) {
       $scope.output.currentPage = 0;
