@@ -32,7 +32,8 @@
     "jasmine": false,
     "spyOn": false,
     "xit": false,
-    "xdescribe": false
+    "xdescribe": false,
+    "getJSONFixture": false
   }
 }
 
