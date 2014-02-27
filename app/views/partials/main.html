@@ -2,15 +2,30 @@
 
 <div>
   <h1>NYC Restaurant Browser</h1>
-  <p>Showing {{(output.venuesMeta | byBoroughAndCategoryAndName:input).length}} results</p>
+  <p ng-if="output.pagedResults().length !== 0">Showing {{output.currentPage*input.pageSize+1}}-{{(output.currentPage*input.pageSize+1)+output.pagedResults().length-1}} of {{output.groupedResults().length}} results</p>
+  <p ng-if="output.pagedResults().length === 0">Found no results for specified criteria.</p>
 </div>
+
+<ul class="pagination" ng-if="output.pagedResults().length !== 0">
+  <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
+  <li ng-repeat="page in output.pages().first">
+    <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
+  </li>
+
+  <li class="active"><a href="#">{{output.currentPage + 1}}</a></li>
+
+  <li ng-repeat="page in output.pages().second">
+    <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
+  </li>
+  <li><a ng-click="nextPage()" href="#">&raquo;</a></li>
+</ul>
 
 <div class="row">
   <div class='col-sm-6'>
     <form class="form-horizontal" role="form">
       <div class='form-group'>
-        <label for='boroughSelector' class="col-sm-2 control-label">Borough</label>
-        <div class="col-sm-10">
+        <label for='boroughSelector' class="col-sm-3 control-label">Borough</label>
+        <div class="col-sm-9">
         <select class="form-control"
                 chosen
                 allow-single-deselect="true"
@@ -24,8 +39,8 @@
       </div>
 
       <div class='form-group'>
-        <label for='categorySelector' class="col-sm-2 control-label">Category</label>
-        <div class="col-sm-10">
+        <label for='categorySelector' class="col-sm-3 control-label">Category</label>
+        <div class="col-sm-9">
         <select class="form-control"
                 chosen
                 allow-single-deselect="true"
@@ -39,16 +54,16 @@
       </div>
 
       <div class='form-group'>
-        <label for='nameSelector' class="col-sm-2 control-label">Name</label>
-        <div class='col-sm-10'>
+        <label for='nameSelector' class="col-sm-3 control-label">Name</label>
+        <div class='col-sm-9'>
         <input class="form-control" data-ng-model="input.nameSelector" name='nameSelector' type='text' placeholder='Name' />
         </div>
       </div> 
     </form>
   </div>
 
-  <div class="marketing col-sm-6">
-    <div ng-repeat="meta in output.venuesMeta | byBoroughAndCategoryAndName:input"> 
+  <div class="col-sm-6">
+    <div ng-repeat="meta in output.pagedResults()"> 
         <h4>{{meta.venue.name}}</h4>  
         <span class='text-muted'>
           in <strong>{{meta.venue.location.city | upcase}}</strong> in <strong>{{meta.venue.categories[0].shortName}}</strong> category

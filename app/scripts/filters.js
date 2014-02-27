@@ -4,27 +4,22 @@ angular.module('myApp')
 .filter('upcase', function() {
   return upcase;
 })
-.filter('byBoroughAndCategoryAndName', function() {
-  return function(venuesMeta, input) {
-    var borough = input.boroughSelector;
-    var category = input.categorySelector;
-    var name = input.nameSelector;
-
-    if (borough) {
-      venuesMeta = filterByBorough(venuesMeta, borough);
-    }
-
-    if (venuesMeta.length && category) {
-      venuesMeta = filterByCategory(venuesMeta, category);
-    }
-
-    if (venuesMeta.length && name) {
-      venuesMeta = filterByName(venuesMeta, name); 
-    }
-
-    return venuesMeta;
- }     
-});
+.filter ('boroughFilter', function() {
+  return filterByBorough;
+})
+.filter ('categoryFilter', function() {
+  return filterByCategory;
+})
+.filter ('nameFilter', function() {
+  return filterByName;
+})
+.filter('paginateFilter', ['$filter', function ($filter) {
+   return function(input, currentPage, pageSize) {
+      if (input instanceof Array) {
+          return $filter('limitTo')(input.slice(currentPage * pageSize), pageSize);
+      }
+   } 
+}]);
 
 function filterByBorough(venuesMeta, borough) {
   if (!borough) {
@@ -47,7 +42,7 @@ function filterByCategory(venuesMeta, category) {
 }
 
 function filterByName(venuesMeta, name) {
-  if (!name || name.length < 2) {
+  if (!name || name.length < 3) {
     return venuesMeta;
   }
 
