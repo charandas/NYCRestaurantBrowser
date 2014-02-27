@@ -17,7 +17,7 @@ angular.module('myApp')
                    'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort(casecmp)
     };
 
-    $scope.input.pageSize = 4;
+    $scope.input.pageSize = 20;
     
     $scope.output = {
       currentPage: 0,

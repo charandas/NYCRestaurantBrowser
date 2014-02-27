@@ -6,70 +6,67 @@
   <p ng-if="output.pagedResults().length === 0">Found no results for specified criteria.</p>
 </div>
 
-<ul class="pagination" ng-if="output.pagedResults().length !== 0">
-  <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
-  <li ng-repeat="page in output.pages().first">
-    <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
-  </li>
+<form class="form-horizontal" role="form">
 
-  <li class="active"><a href="#">{{output.currentPage + 1}}</a></li>
+  <ul class="pagination form-group" ng-if="output.pagedResults().length !== 0">
+    <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
+    <li ng-repeat="page in output.pages().first">
+      <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
+    </li>
 
-  <li ng-repeat="page in output.pages().second">
-    <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
-  </li>
-  <li><a ng-click="nextPage()" href="#">&raquo;</a></li>
-</ul>
+    <li class="active"><a href="#">{{output.currentPage + 1}}</a></li>
 
-<div class="row">
-  <div class='col-sm-6'>
-    <form class="form-horizontal" role="form">
-      <div class='form-group'>
-        <label for='boroughSelector' class="col-sm-3 control-label">Borough</label>
-        <div class="col-sm-9">
-        <select class="form-control"
-                chosen
-                allow-single-deselect="true"
-                name="boroughSelector"
-                data-placeholder="Borough"
-                data-ng-model="input.boroughSelector"
-                ng-options="b as b | upcase for b in input.boroughs">
-          <option value=""></option>
-        </select>
-        </div>
-      </div>
+    <li ng-repeat="page in output.pages().second">
+      <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
+    </li>
+    <li><a ng-click="nextPage()" href="#">&raquo;</a></li>
+  </ul>
 
-      <div class='form-group'>
-        <label for='categorySelector' class="col-sm-3 control-label">Category</label>
-        <div class="col-sm-9">
-        <select class="form-control"
-                chosen
-                allow-single-deselect="true"
-                name="categorySelector"
-                data-placeholder="Category"
-                data-ng-model="input.categorySelector"
-                ng-options="c as c | upcase for c in input.categories">
-          <option value=""></option>
-        </select>
-        </div>
-      </div>
-
-      <div class='form-group'>
-        <label for='nameSelector' class="col-sm-3 control-label">Name</label>
-        <div class='col-sm-9'>
-        <input class="form-control" data-ng-model="input.nameSelector" name='nameSelector' type='text' placeholder='Name' />
-        </div>
-      </div> 
-    </form>
+  <div class='form-group'>
+    <label for='boroughSelector' class="col-sm-3 control-label">Borough</label>
+    <div class="col-sm-9">
+    <select class="form-control"
+            chosen
+            allow-single-deselect="true"
+            name="boroughSelector"
+            data-placeholder="Borough"
+            data-ng-model="input.boroughSelector"
+            ng-options="b as b | upcase for b in input.boroughs">
+      <option value=""></option>
+    </select>
+    </div>
   </div>
 
-  <div class="col-sm-6">
-    <div ng-repeat="meta in output.pagedResults()"> 
-        <h4>{{meta.venue.name}}</h4>  
-        <span class='text-muted'>
-          in <strong>{{meta.venue.location.city | upcase}}</strong> in <strong>{{meta.venue.categories[0].shortName}}</strong> category
-        </span>
-        <img ng-src={{meta.primary_photo}} style="width: 306px; height: 306px;"/>
+  <div class='form-group'>
+    <label for='categorySelector' class="col-sm-3 control-label">Category</label>
+    <div class="col-sm-9">
+    <select class="form-control"
+            chosen
+            allow-single-deselect="true"
+            name="categorySelector"
+            data-placeholder="Category"
+            data-ng-model="input.categorySelector"
+            ng-options="c as c | upcase for c in input.categories">
+      <option value=""></option>
+    </select>
+    </div>
+  </div>
+
+  <div class='form-group'>
+    <label for='nameSelector' class="col-sm-3 control-label">Name</label>
+    <div class='col-sm-9'>
+    <input class="form-control" data-ng-model="input.nameSelector" name='nameSelector' type='text' placeholder='Name' />
+    </div>
+  </div> 
+</form>
+
+<div class="venue-wrap">
+  <div ng-repeat="meta in output.pagedResults()" class="venue-box">
+    <div class="venue">
+      <img ng-src={{meta.primary_photo}} />
+      <div class='img-caption'>{{meta.venue.name}}: {{meta.venue.location.city | upcase}} - {{meta.venue.categories[0].shortName}}</div>
     </div>
   </div>
 </div>
+
 

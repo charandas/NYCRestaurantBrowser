@@ -4,12 +4,6 @@ $icon-font-path: "/bower_components/bootstrap-sass/fonts/";
 
 @import 'chosen/bootstrap';
 
-.browsehappy {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
 
 /* Space out content a bit */
 body {
@@ -17,10 +11,86 @@ body {
     padding-bottom: 20px;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
+/* Venue styling */
+.venue-wrap {
+   overflow: hidden;
+   margin: 10px;
+}
+
+.venue-box {
+  width: 25%;
+  padding-bottom: 25%;
+  position: relative;
+  float: left;
+}
+
+.venue {
+  background: #000;
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  overflow: hidden;
+}
+
+.venue img {
+  width: 100%;
+}
+
+.venue .img-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-bottom: -80px;
+  background: #000;
+  background: rgba(0, 0, 0, 0.5);
+  color: #FFF;
+  padding: 10px;
+  text-align: center;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+
+/* Hover Styles */
+body.no-touch .venue:hover .img-caption, body.touch .venue.touchFocus .img-caption {
+   margin-bottom: 0;
+}
+
+@media only screen and (max-width : 480px) {
+   /* Smartphone view: 1 tile */
+   .venue-box {
+      width: 100%;
+      padding-bottom: 100%;
+   }
+}
+@media only screen and (max-width : 650px) and (min-width : 481px) {
+   /* Tablet view: 2 tiles */
+   .venue-box {
+      width: 50%;
+      padding-bottom: 50%;
+   }
+}
+@media only screen and (max-width : 1050px) and (min-width : 651px) {
+   /* Small desktop / ipad view: 3 tiles */
+   .venue-box {
+      width: 33.3%;
+      padding-bottom: 33.3%;
+   }
+}
+@media only screen and (max-width : 1290px) and (min-width : 1051px) {
+   /* Medium desktop: 4 tiles */
+   .venue-box {
+      width: 25%;
+      padding-bottom: 25%;
+   }
+}
+
+/* Everything gets side spacing for mobile first views */
+.header {
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -38,37 +108,6 @@ body {
     padding-bottom: 19px;
 }
 
-/* Custom page footer */
-.footer {
-    padding-top: 19px;
-    color: #777;
-    border-top: 1px solid #e5e5e5;
-}
-
-.container-narrow > hr {
-    margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-    text-align: center;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.jumbotron .btn {
-    font-size: 21px;
-    padding: 14px 24px;
-}
-
-/* Supporting marketing content */
-.marketing {
-    margin: 40px 0;
-}
-
-.marketing p + h4 {
-    margin-top: 28px;
-}
-
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .container {
@@ -76,18 +115,12 @@ body {
     }
 
     /* Remove the padding we set earlier */
-    .header,
-    .marketing,
-    .footer {
+    .header {
         padding-left: 0;
         padding-right: 0;
     }
     /* Space out the masthead */
     .header {
         margin-bottom: 30px;
-    }
-    /* Remove the bottom border on the jumbotron for visual effect */
-    .jumbotron {
-        border-bottom: 0;
     }
 }
