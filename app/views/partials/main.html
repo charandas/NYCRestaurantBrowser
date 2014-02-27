@@ -1,27 +1,28 @@
 <div ng-include="'partials/navbar'"></div>
 
-<div>
+<div class="text-center">
   <h1>NYC Restaurant Browser</h1>
+</div>
+
+<div class="row text-center">
   <p ng-if="output.pagedResults().length !== 0">Showing {{output.currentPage*input.pageSize+1}}-{{(output.currentPage*input.pageSize+1)+output.pagedResults().length-1}} of {{output.groupedResults().length}} results</p>
   <p ng-if="output.pagedResults().length === 0">Found no results for specified criteria.</p>
+  <ul class="pagination" ng-if="output.pagedResults().length !== 0">
+      <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
+      <li ng-repeat="page in output.pages().first">
+        <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
+      </li>
+
+      <li class="active"><a href="#">{{output.currentPage + 1}}</a></li>
+
+      <li ng-repeat="page in output.pages().second">
+        <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
+      </li>
+      <li><a ng-click="nextPage()" href="#">&raquo;</a></li>
+  </ul>
 </div>
 
 <form class="form-horizontal" role="form">
-
-  <ul class="pagination form-group" ng-if="output.pagedResults().length !== 0">
-    <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
-    <li ng-repeat="page in output.pages().first">
-      <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
-    </li>
-
-    <li class="active"><a href="#">{{output.currentPage + 1}}</a></li>
-
-    <li ng-repeat="page in output.pages().second">
-      <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
-    </li>
-    <li><a ng-click="nextPage()" href="#">&raquo;</a></li>
-  </ul>
-
   <div class='form-group'>
     <label for='boroughSelector' class="col-sm-3 control-label">Borough</label>
     <div class="col-sm-9">
