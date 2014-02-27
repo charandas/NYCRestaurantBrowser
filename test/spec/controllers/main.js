@@ -7,7 +7,7 @@ function transformToVenueArray(venuesMap) {
     var venuesForKey = venuesMap[key].response.groups[0].items;
     for (var i = 0; i < venuesForKey.length; i++) {
       var photoMeta = venuesForKey[i].venue.photos.groups[0].items[0];
-      venuesForKey[i].primary_photo = photoMeta.prefix + photoMeta.width + 'x' + photoMeta.height + photoMeta.suffix;
+      venuesForKey[i].primaryPhoto = photoMeta.prefix + photoMeta.width + 'x' + photoMeta.height + photoMeta.suffix;
       venues.push(venuesForKey[i]);
     }
   }
@@ -123,8 +123,7 @@ describe('Controller: MainCtrl', function () {
 
     scope.input.nameSelector = 'th';
     scope.$digest();
-
-  expect(scope.output.groupedResults().length).toBe(40);
+    expect(scope.output.groupedResults().length).toBe(40);
   });
 
   it ('should filter by name in a greedy manner', function() {
