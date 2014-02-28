@@ -13,8 +13,11 @@ function casecmp(a, b) {
 }
 
 angular.module('myApp')
-  .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter',
-    function ($scope, $http, $resource, $filter) {
+  .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter', '$location', 'SelectedVenue',
+    function ($scope, $http, $resource, $filter, $location, SelectedVenue) {
+
+    // Store shared state on $scope
+    $scope.selected = SelectedVenue;
 
     // Source the filters
     var boroughFilter = $filter('boroughFilter');
@@ -35,6 +38,14 @@ angular.module('myApp')
       currentPage: 0,
       venuesMeta: {}
     };
+
+    // Fetch the venues
+    $scope.output.venuesMeta = $resource('api/venues', {}, {}).query();
+
+    // Setup watch to circle back to 0 everytime groupedResults change
+    $scope.$watch('output.groupedResults().length', function() {
+      $scope.output.currentPage = 0;
+    });
 
     $scope.output.numPages = function() {
       return Math.ceil($scope.output.groupedResults().length / $scope.input.pageSize);
@@ -97,11 +108,11 @@ angular.module('myApp')
       $scope.output.currentPage += 1;
     };
 
-    // Fetch the venues
-    $scope.output.venuesMeta = $resource('api/venues', {}, {}).query();
-
-    $scope.$watch('output.groupedResults().length', function() {
-      $scope.output.currentPage = 0;
-    });
+    $scope.changeView = function(view, selected) {
+      // Store selected state on the shared service
+      $scope.selected.venue = selected;
+      // Activate detail view
+      $location.path(view);
+    };
   }
   ]));

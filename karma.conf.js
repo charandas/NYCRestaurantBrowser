@@ -20,6 +20,7 @@ module.exports = function(config) {
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/angular-route/angular-route.js',
       'app/bower_components/angular-chosen-localytics/chosen.js',
+      'app/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
