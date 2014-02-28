@@ -55,6 +55,13 @@ body {
   transition: all 0.3s ease-out;
 }
 
+.venue .img-caption-link {
+  cursor: pointer; cursor: hand;
+}
+
+.venue .img-caption-link, .img-caption-details {
+  color: #FFF;
+}
 /* Hover Styles */
 body.no-touch .venue:hover .img-caption, body.touch .venue.touchFocus .img-caption {
    margin-bottom: 0;

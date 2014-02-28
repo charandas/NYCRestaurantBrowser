@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('myApp')
-  .controller('DetailCtrl', (['$scope', '$http', '$location', 'SelectedVenue',
-    function($scope, $http, $location, SelectedVenue) {
+  .controller('DetailCtrl', (['$scope', '$http', '$location', '$routeParams', 'SelectedVenue',
+      function($scope, $http, $location, $routeParams, SelectedVenue) {
+    console.log($routeParams.venueId);
     $scope.selected = SelectedVenue;
     angular.extend($scope, {
-      nyCenter: {
-        lat: 40.67,
-        lng: -73.94,
-        zoom: 8
+      center: {
+        lat: $scope.selected.venue.venue ? $scope.selected.venue.venue.location.lat : 40.67,
+        lng: $scope.selected.venue.venue ? $scope.selected.venue.venue.location.lng : -73.94,
+        zoom: 16
       },
       markers: {
         osloMarker: {

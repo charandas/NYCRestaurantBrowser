@@ -111,6 +111,10 @@ angular.module('myApp')
     $scope.changeView = function(view, selected) {
       // Store selected state on the shared service
       $scope.selected.venue = selected;
+
+      // Append resource
+      view += window.encodeURIComponent(selected.venue.id);
+
       // Activate detail view
       $location.path(view);
     };

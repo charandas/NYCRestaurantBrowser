@@ -67,7 +67,10 @@
   <div ng-repeat="meta in output.pagedResults()" class="venue-box">
     <div class="venue">
       <img ng-src={{meta.primaryPhoto}} />
-      <a ng-click="changeView('detail', meta)" class='img-caption'>{{meta.venue.name}}: {{meta.venue.location.city | upcase}} - {{meta.venue.categories[0].shortName}}</a>
+      <div class='img-caption'>
+        <a class='img-caption-link' ng-click="changeView('detail/', meta)">{{meta.venue.name}}</a>
+        <div class='img-caption-details'>{{meta.venue.location.city | upcase}} - {{meta.venue.categories[0].shortName}}</div>
+      </div>
     </div>
   </div>
 </div>
