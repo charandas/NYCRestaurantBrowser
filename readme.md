@@ -33,7 +33,7 @@ curl https://api.foursquare.com/v2/venues/explore\?near\=Queens%20New%20York\&cl
 
 ### Routing: ###
 1. `api/venues`: GET returns all results
-2. `api/venues/<FOURSQUARE_VENUE_ID`: GET returns one result. This is used when the detailed page is not accessed from within the master controller and the resource is needed to display the detail view.
+2. `api/venues/<FOURSQUARE_VENUE_ID>`: GET returns one result. This is used when the detailed page is not accessed from within the master controller and the resource is needed to display the detail view.
 
  
 
