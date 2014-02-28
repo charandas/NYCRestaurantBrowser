@@ -8,7 +8,7 @@ Outlined here are the steps that should allow you to run this project. In the ev
 ### Steps: ###
 1. `cd` to the cloned directory.
 2. `npm install`.
-3. No need to run `bower install`: I have already handpicked my versions, it basically asked me about the angular and jQuery versions (with various choices) and I selected Angular 1.2.11 and jQuery 2.1.0.
+3. `bower install`: Here, it will ask about the angular and jQuery versions (with various choices). Please go ahead and select 1.2.11 for everything Angular and jQuery 2.1.0. (I tried checking in bower components but not my lucky day with version controlling them - I have done this in the past.)
 4. `grunt serve` should start the server with the hosted express/angular app.
 5. To run jshint: `grunt jshint` and `grunt jshint:test`.
 6. To run tests: `karma start` and `karma run` in another terminal preferrably.
