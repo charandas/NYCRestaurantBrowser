@@ -2,5 +2,5 @@
 
 angular.module('myApp')
   .factory('SelectedVenue', function() {
-    return {venue: {}};
+    return {venue: undefined};
   });

@@ -3,22 +3,68 @@
 describe('Controller: DetailCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('karanNycrestaurantBrowserApp'));
+  beforeEach(module('myApp'));
 
   var DetailCtrl,
     scope,
-    $httpBackend;
+    $httpBackend,
+    sourcedVenue,
+    _SelectedVenue;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    $httpBackend = _$httpBackend_;
-    scope = $rootScope.$new();
-    DetailCtrl = $controller('DetailCtrl', {
-      $scope: scope
+  beforeEach(function() {
+    module(function($provide) {
+      $provide.value('SelectedVenue', {venue: undefined});
     });
-  }));
+    inject(function (_$httpBackend_, $controller, $rootScope, SelectedVenue) {
+      jasmine.getJSONFixtures().fixturesPath ='base/test/mock';
+      sourcedVenue = getJSONFixture('4decca141f6e3ddebe06c5ef.json');
 
-  xit('should attach a list of awesomeThings to the scope', function () {
+      $httpBackend = _$httpBackend_;
+      scope = $rootScope.$new();
+      _SelectedVenue = SelectedVenue;
+      DetailCtrl = $controller('DetailCtrl', {
+        $scope: scope,
+        $routeParams: {id: '4decca141f6e3ddebe06c5ef'} // for smith canteen
+      });
+    });
+  });
 
+  describe('SelectedVenue integration', function() {
+    it('should set selected to point to shared Service: SelectedVenue', function () {
+      expect(angular.equals(_SelectedVenue, scope.selected)).toBeTruthy();
+    });
+  });
+
+  xdescribe('Selected venue already set in scope, no sourcing required', function(){
+    // TODO: cannot be tested in the current optimized way the controller runs
+    // if we had watchers for scope.selected, we could unset it for other tests
+    // and this test could run with a set state.
+  });
+
+  describe('Sourced resource scenario wherein the main controller doesn\'t execute', function(){
+    it('should set selected to the resourced venue if not already set', function() {
+      $httpBackend.expectGET('api/venues/4decca141f6e3ddebe06c5ef').respond(sourcedVenue);
+      $httpBackend.flush();
+      expect(angular.equals(_SelectedVenue, scope.selected)).toBeTruthy();
+      expect(angular.equals(scope.selected.venue, sourcedVenue)).toBeTruthy();
+    });
+
+    it('should furthermore set leaflet center and markers to sourced venue', function() {
+      expect(scope.center).toBeDefined();
+      expect(scope.markers).toBeDefined();
+      expect(scope.markers.venueMarker).toBeDefined();
+      expect(scope.defaults).toBeDefined();
+
+      $httpBackend.expectGET('api/venues/4decca141f6e3ddebe06c5ef').respond(sourcedVenue);
+      $httpBackend.flush();
+      expect(angular.equals(_SelectedVenue, scope.selected)).toBeTruthy();
+      expect(angular.equals(scope.selected.venue, sourcedVenue)).toBeTruthy();
+
+      expect(scope.center.lat).toBe(scope.selected.venue.location.lat);
+      expect(scope.center.lng).toBe(scope.selected.venue.location.lng);
+      expect(scope.markers.venueMarker.lat).toBe(scope.selected.venue.location.lat);
+      expect(scope.markers.venueMarker.lng).toBe(scope.selected.venue.location.lng);
+    });
   });
 });

@@ -27,7 +27,7 @@ angular.module('myApp')
     
     $scope.input = {
       boroughs: ['bronx', 'brooklyn', 'manhattan', 'queens'],
-      categories: ['asian', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
+      categories: ['asian', 'mexican', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
                    'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort(casecmp)
     };
@@ -36,11 +36,11 @@ angular.module('myApp')
     
     $scope.output = {
       currentPage: 0,
-      venuesMeta: {}
+      venues: {}
     };
 
     // Fetch the venues
-    $scope.output.venuesMeta = $resource('api/venues', {}, {}).query();
+    $scope.output.venues = $resource('api/venues', {}, {}).query();
 
     // Setup watch to circle back to 0 everytime groupedResults change
     $scope.$watch('output.groupedResults().length', function() {
@@ -71,7 +71,7 @@ angular.module('myApp')
     };
 
     $scope.output.groupedResults = function() {
-      var result = boroughFilter($scope.output.venuesMeta, $scope.input.boroughSelector);
+      var result = boroughFilter($scope.output.venues, $scope.input.boroughSelector);
       result = categoryFilter(result, $scope.input.categorySelector);
       result = nameFilter(result, $scope.input.nameSelector);
 
@@ -113,7 +113,7 @@ angular.module('myApp')
       $scope.selected.venue = selected;
 
       // Append resource
-      view += window.encodeURIComponent(selected.venue.id);
+      view += window.encodeURIComponent(selected.id);
 
       // Activate detail view
       $location.path(view);

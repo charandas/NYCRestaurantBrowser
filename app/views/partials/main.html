@@ -64,12 +64,12 @@
 </form>
 
 <div class="venue-wrap">
-  <div ng-repeat="meta in output.pagedResults()" class="venue-box">
+  <div ng-repeat="venue in output.pagedResults()" class="venue-box">
     <div class="venue">
-      <img ng-src={{meta.primaryPhoto}} />
+      <img ng-src={{venue.primaryPhoto}} />
       <div class='img-caption'>
-        <a class='img-caption-link' ng-click="changeView('detail/', meta)">{{meta.venue.name}}</a>
-        <div class='img-caption-details'>{{meta.venue.location.city | upcase}} - {{meta.venue.categories[0].shortName}}</div>
+        <a class='img-caption-link' ng-click="changeView('detail/', venue)">{{venue.name}}</a>
+        <div class='img-caption-details'>{{venue.location.city | upcase}} - {{venue.categories[0].shortName}}</div>
       </div>
     </div>
   </div>

@@ -1,17 +1,20 @@
 'use strict';
 
 function upcase(string) {
+  if (!string) {
+    return '';
+  }
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function filterByBorough(venuesMeta, boroughs) {
+function filterByBorough(venues, boroughs) {
   if (!boroughs || (boroughs.length === 0)) {
-    return venuesMeta;
+    return venues;
   }
 
-  return venuesMeta.filter(function(meta) {
+  return venues.filter(function(venue) {
     for (var i = 0; i < boroughs.length; i++) {
-      if (meta.venue.location.city === upcase(boroughs[i])) {
+      if (venue.location.city === upcase(boroughs[i])) {
         return true;
       }
     }
@@ -20,14 +23,14 @@ function filterByBorough(venuesMeta, boroughs) {
   });
 }
 
-function filterByCategory(venuesMeta, categories) {
+function filterByCategory(venues, categories) {
   if (!categories || (categories.length === 0)) {
-    return venuesMeta;
+    return venues;
   }
 
-  return venuesMeta.filter(function(meta) {
+  return venues.filter(function(venue) {
     for (var i = 0; i < categories.length; i++) {
-      if (meta.venue.categories[0].shortName.toLowerCase() === categories[i].toLowerCase()) {
+      if (venue.categories[0].shortName.toLowerCase() === categories[i].toLowerCase()) {
         return true;
       }
     }
@@ -36,16 +39,16 @@ function filterByCategory(venuesMeta, categories) {
   });
 }
 
-function filterByName(venuesMeta, name) {
+function filterByName(venues, name) {
   if (!name || name.length < 3) {
-    return venuesMeta;
+    return venues;
   }
 
   var names = name.split(' ');
 
-  return venuesMeta.filter(function(meta) {
+  return venues.filter(function(venue) {
     for (var i = 0; i < names.length; i++) {
-      var lhs = meta.venue.name.toLowerCase();
+      var lhs = venue.name.toLowerCase();
       var rhs = names[i].toLowerCase();
       if(lhs.indexOf(rhs) !== -1) {
         return true;

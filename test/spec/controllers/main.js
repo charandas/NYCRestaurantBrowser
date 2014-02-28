@@ -1,14 +1,20 @@
 'use strict';
 
-function transformToVenueArray(venuesMap) {
-  var venues = [];
+// Global venues variable, constructed once and cached for later tests
+// Basically, contains massaged foursquare data that this project uses throughout
+var venues = [];
+
+function transformToVenueArray(venuesMap, venues) {
+  if (venues.length !== 0) {
+    return;
+  }
 
   for (var key in venuesMap) {
     var venuesForKey = venuesMap[key].response.groups[0].items;
     for (var i = 0; i < venuesForKey.length; i++) {
       var photoMeta = venuesForKey[i].venue.photos.groups[0].items[0];
-      venuesForKey[i].primaryPhoto = photoMeta.prefix + photoMeta.width + 'x' + photoMeta.height + photoMeta.suffix;
-      venues.push(venuesForKey[i]);
+      venuesForKey[i].venue.primaryPhoto = photoMeta.prefix + photoMeta.width + 'x' + photoMeta.height + photoMeta.suffix;
+      venues.push(venuesForKey[i].venue);
     }
   }
 
@@ -23,8 +29,7 @@ describe('Controller: MainCtrl', function () {
   var MainCtrl,
     scope,
     $httpBackend,
-    venuesMap,
-    venues;
+    venuesMap;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
@@ -36,7 +41,7 @@ describe('Controller: MainCtrl', function () {
       queens: getJSONFixture('queens.json')
     };
 
-    venues = transformToVenueArray(venuesMap);
+    transformToVenueArray(venuesMap, venues);
 
     $httpBackend = _$httpBackend_;
     scope = $rootScope.$new();
@@ -52,21 +57,21 @@ describe('Controller: MainCtrl', function () {
       $httpBackend.expectGET('api/venues')
         .respond([]);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
-      expect(scope.output.venuesMeta.length).toBe(0);
+      expect(scope.output.venues).toBeDefined();
+      expect(scope.output.venues.length).toBe(0);
     });
 
     it('should handle venue results', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
-      expect(scope.output.venuesMeta.length).toBe(venues.length);
+      expect(scope.output.venues).toBeDefined();
+      expect(scope.output.venues.length).toBe(venues.length);
     });
 
     it('should filter by borough', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
 
       scope.input.boroughSelector = ['bronx'];
       scope.$digest();
@@ -80,7 +85,7 @@ describe('Controller: MainCtrl', function () {
     it('should filter by category', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
 
       scope.input.categorySelector = ['thai'];
       scope.$digest();
@@ -102,7 +107,7 @@ describe('Controller: MainCtrl', function () {
     it ('should filter by name when length greater than 2', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
 
       scope.input.nameSelector = 'tha';
       scope.$digest();
@@ -110,16 +115,16 @@ describe('Controller: MainCtrl', function () {
       var groupedResults = scope.output.groupedResults();
 
       expect(groupedResults.length).toBe(3);
-      expect(groupedResults[0].venue.name).toBe('Balthazar Restaurant');
-      expect(groupedResults[1].venue.name).toBe('SriPraPhai Thai Restaurant');
-      expect(groupedResults[2].venue.name).toBe('Martha\'s Country Bakery');
+      expect(groupedResults[0].name).toBe('Balthazar Restaurant');
+      expect(groupedResults[1].name).toBe('SriPraPhai Thai Restaurant');
+      expect(groupedResults[2].name).toBe('Martha\'s Country Bakery');
     });
   });
 
   it ('shouldn\'t filter by name when length less than 2', function() {
     $httpBackend.expectGET('api/venues').respond(venues);
     $httpBackend.flush();
-    expect(scope.output.venuesMeta).toBeDefined();
+    expect(scope.output.venues).toBeDefined();
 
     scope.input.nameSelector = 'th';
     scope.$digest();
@@ -129,7 +134,7 @@ describe('Controller: MainCtrl', function () {
   it ('should filter by name in a greedy manner', function() {
     $httpBackend.expectGET('api/venues').respond(venues);
     $httpBackend.flush();
-    expect(scope.output.venuesMeta).toBeDefined();
+    expect(scope.output.venues).toBeDefined();
 
     scope.input.nameSelector = 'thai bakery';
     scope.$digest();
@@ -141,14 +146,14 @@ describe('Controller: MainCtrl', function () {
     it ('should start at page 0', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
       expect(scope.output.currentPage).toBe(0);
     });
 
     it ('should flip to next page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
       expect(scope.output.currentPage).toBe(0);
 
       var numPages = scope.output.numPages();
@@ -164,7 +169,7 @@ describe('Controller: MainCtrl', function () {
     it ('should jump to actual page for humanized page number string', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
       expect(scope.output.currentPage).toBe(0);
 
       var numPages = scope.output.numPages();
@@ -178,7 +183,7 @@ describe('Controller: MainCtrl', function () {
     it ('should flip to previous page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
       expect(scope.output.currentPage).toBe(0);
 
       var numPages = scope.output.numPages();
@@ -199,7 +204,7 @@ describe('Controller: MainCtrl', function () {
     it ('shouldn\'t flip prior to the first page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
 
       expect(scope.output.currentPage).toBe(0);
       scope.prevPage();
@@ -211,7 +216,7 @@ describe('Controller: MainCtrl', function () {
     it ('shouldn\'t flip past the last page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
 
       expect(scope.output.numPages()).toBe(10);
       // Jump to the last page
@@ -228,7 +233,7 @@ describe('Controller: MainCtrl', function () {
     it ('should reset to page 0 given a filter', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
       // Start at 0 as usual
       expect(scope.output.currentPage).toBe(0);
 
@@ -249,7 +254,7 @@ describe('Controller: MainCtrl', function () {
     it ('should determine paginated results', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
 
       expect(scope.output.groupedResults().length).toBe(40);
       expect(scope.input.pageSize).toBe(4);
@@ -261,7 +266,7 @@ describe('Controller: MainCtrl', function () {
     it ('should determine paginated results given a filter', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venuesMeta).toBeDefined();
+      expect(scope.output.venues).toBeDefined();
 
       scope.input.boroughSelector = ['bronx'];
       scope.$digest();

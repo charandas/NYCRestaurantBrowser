@@ -14,7 +14,7 @@ angular.module('myApp', [
         templateUrl: 'partials/main',
         controller: 'MainCtrl'
       })
-      .when('/detail/:venueId', {
+      .when('/detail/:id', {
         templateUrl: 'partials/detail',
         controller: 'DetailCtrl',
 

@@ -11,8 +11,9 @@ describe('Service: SelectedVenue', function () {
     SelectedVenue = _SelectedVenue_;
   }));
 
-  it('should do something', function () {
+  it('should return an empty object', function () {
     expect(!!SelectedVenue).toBe(true);
+    expect(angular.equals(SelectedVenue, {venue: undefined})).toBeTruthy();
   });
 
 });

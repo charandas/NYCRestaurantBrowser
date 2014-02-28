@@ -1,5 +1,25 @@
-<p>This is the detail view.</p>
+<div ng-include="'partials/navbar'"></div>
 
-<p><a class="btn btn-lg btn-success" ng-href="/" ng-click="goBack()">Back to Results</a></p>
+<div class="row">
+  <p><a class="btn btn-lg btn-success" ng-href="/" ng-click="goBack()">Back to Results</a></p>
+</div>
 
-<leaflet markers="markers" center="center" height="480px" width="640px"></leaflet>
+<div>
+  <div>
+    <h4>{{selected.venue.name}}</h4>
+    <p><strong>Catgory</strong>: {{selected.venue.categories[0].shortName}}</p>
+    <p><strong>Phone</strong>: {{selected.venue.contact.phone}}</p>
+    <p><strong>Address</strong>: {{selected.venue.location.address}}, {{selected.venue.location.city}}</p>
+    <leaflet markers="markers" center="center" height="240px" width="360px"></leaflet>
+  </div>
+</div>
+
+<div class="detail">
+  <div class="detail-map">
+    
+  </div>
+    
+  <img class="detail-img img-responsive" ng-src={{selected.venue.primaryPhoto}} />
+</div>
+
+
