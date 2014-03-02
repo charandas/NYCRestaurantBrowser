@@ -5,17 +5,17 @@
 </div>
 
 <div class="row text-center">
-  <p ng-if="output.pagedResults().length !== 0">Showing {{output.currentPage*input.pageSize+1}}-{{(output.currentPage*input.pageSize+1)+output.pagedResults().length-1}} of {{output.groupedResults().length}} results</p>
-  <p ng-if="output.pagedResults().length === 0">Found no results for specified criteria.</p>
-  <ul class="pagination" ng-if="output.pagedResults().length !== 0">
+  <p ng-if="data.pagedResults().length !== 0">Showing {{data.currentPage*static.pageSize+1}}-{{(data.currentPage*static.pageSize+1)+data.pagedResults().length-1}} of {{data.groupedResults().length}} results</p>
+  <p ng-if="data.pagedResults().length === 0">Found no results for specified criteria.</p>
+  <ul class="pagination" ng-if="data.pagedResults().length !== 0">
       <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
-      <li ng-repeat="page in output.pages().first">
+      <li ng-repeat="page in data.pages().first">
         <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
       </li>
 
-      <li class="active"><a href="#">{{output.currentPage + 1}}</a></li>
+      <li class="active"><a href="#">{{data.currentPage + 1}}</a></li>
 
-      <li ng-repeat="page in output.pages().second">
+      <li ng-repeat="page in data.pages().second">
         <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
       </li>
       <li><a ng-click="nextPage()" href="#">&raquo;</a></li>
@@ -32,8 +32,8 @@
             allow-single-deselect="true"
             name="boroughSelector"
             data-placeholder="Borough"
-            data-ng-model="input.boroughSelector"
-            ng-options="b as b | upcase for b in input.boroughs">
+            data-ng-model="filterControls.boroughSelector"
+            ng-options="b as b | upcase for b in static.boroughs">
       <option value=""></option>
     </select>
     </div>
@@ -48,8 +48,8 @@
             allow-single-deselect="true"
             name="categorySelector"
             data-placeholder="Category"
-            data-ng-model="input.categorySelector"
-            ng-options="c as c | upcase for c in input.categories">
+            data-ng-model="filterControls.categorySelector"
+            ng-options="c as c | upcase for c in static.categories">
       <option value=""></option>
     </select>
     </div>
@@ -58,13 +58,13 @@
   <div class='form-group'>
     <label for='nameSelector' class="col-sm-3 control-label">Name</label>
     <div class='col-sm-9'>
-    <input class="form-control" data-ng-model="input.nameSelector" name='nameSelector' type='text' placeholder='Name' />
+    <input class="form-control" data-ng-model="filterControls.nameSelector" name='nameSelector' type='text' placeholder='Name' />
     </div>
   </div> 
 </form>
 
 <div class="venue-wrap">
-  <div ng-repeat="venue in output.pagedResults()" class="venue-box">
+  <div ng-repeat="venue in data.pagedResults()" class="venue-box">
     <div class="venue">
       <img ng-src={{venue.primaryPhoto}} />
       <div class='img-caption'>

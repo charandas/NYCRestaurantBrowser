@@ -49,7 +49,7 @@ describe('Controller: MainCtrl', function () {
       $scope: scope
     });
     // All tests written with a pageSize of 4
-    scope.input.pageSize = 4;
+    scope.static.pageSize = 4;
   }));
 
   describe('Venue results and filtering', function() {
@@ -57,62 +57,62 @@ describe('Controller: MainCtrl', function () {
       $httpBackend.expectGET('api/venues')
         .respond([]);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
-      expect(scope.output.venues.length).toBe(0);
+      expect(scope.data.venues).toBeDefined();
+      expect(scope.data.venues.length).toBe(0);
     });
 
     it('should handle venue results', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
-      expect(scope.output.venues.length).toBe(venues.length);
+      expect(scope.data.venues).toBeDefined();
+      expect(scope.data.venues.length).toBe(venues.length);
     });
 
     it('should filter by borough', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
 
-      scope.input.boroughSelector = ['bronx'];
+      scope.filterControls.boroughSelector = ['bronx'];
       scope.$digest();
-      expect(scope.output.groupedResults().length).toBe(10);
+      expect(scope.data.groupedResults().length).toBe(10);
 
-      scope.input.boroughSelector = ['bronx', 'brooklyn'];
+      scope.filterControls.boroughSelector = ['bronx', 'brooklyn'];
       scope.$digest();
-      expect(scope.output.groupedResults().length).toBe(20);
+      expect(scope.data.groupedResults().length).toBe(20);
     });
 
     it('should filter by category', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
 
-      scope.input.categorySelector = ['thai'];
+      scope.filterControls.categorySelector = ['thai'];
       scope.$digest();
-      expect(scope.output.groupedResults().length).toBe(1);
+      expect(scope.data.groupedResults().length).toBe(1);
 
-      scope.input.categorySelector = ['BBQ'];
+      scope.filterControls.categorySelector = ['BBQ'];
       scope.$digest();
-      expect(scope.output.groupedResults().length).toBe(1);
+      expect(scope.data.groupedResults().length).toBe(1);
 
-      scope.input.categorySelector = ['sandwiches'];
+      scope.filterControls.categorySelector = ['sandwiches'];
       scope.$digest();
-      expect(scope.output.groupedResults().length).toBe(3);
+      expect(scope.data.groupedResults().length).toBe(3);
 
-      scope.input.categorySelector = ['thai', 'BBQ', 'sandwiches'];
+      scope.filterControls.categorySelector = ['thai', 'BBQ', 'sandwiches'];
       scope.$digest();
-      expect(scope.output.groupedResults().length).toBe(5);
+      expect(scope.data.groupedResults().length).toBe(5);
     });
 
     it ('should filter by name when length greater than 2', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
 
-      scope.input.nameSelector = 'tha';
+      scope.filterControls.nameSelector = 'tha';
       scope.$digest();
 
-      var groupedResults = scope.output.groupedResults();
+      var groupedResults = scope.data.groupedResults();
 
       expect(groupedResults.length).toBe(3);
       expect(groupedResults[0].name).toBe('Balthazar Restaurant');
@@ -124,129 +124,129 @@ describe('Controller: MainCtrl', function () {
   it ('shouldn\'t filter by name when length less than 2', function() {
     $httpBackend.expectGET('api/venues').respond(venues);
     $httpBackend.flush();
-    expect(scope.output.venues).toBeDefined();
+    expect(scope.data.venues).toBeDefined();
 
-    scope.input.nameSelector = 'th';
+    scope.filterControls.nameSelector = 'th';
     scope.$digest();
-    expect(scope.output.groupedResults().length).toBe(40);
+    expect(scope.data.groupedResults().length).toBe(40);
   });
 
   it ('should filter by name in a greedy manner', function() {
     $httpBackend.expectGET('api/venues').respond(venues);
     $httpBackend.flush();
-    expect(scope.output.venues).toBeDefined();
+    expect(scope.data.venues).toBeDefined();
 
-    scope.input.nameSelector = 'thai bakery';
+    scope.filterControls.nameSelector = 'thai bakery';
     scope.$digest();
 
-    expect(scope.output.groupedResults().length).toBe(3);
+    expect(scope.data.groupedResults().length).toBe(3);
   });
 
   describe('Pillars of pagination', function() {
     it ('should start at page 0', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.venues).toBeDefined();
+      expect(scope.data.currentPage).toBe(0);
     });
 
     it ('should flip to next page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.venues).toBeDefined();
+      expect(scope.data.currentPage).toBe(0);
 
-      var numPages = scope.output.numPages();
+      var numPages = scope.data.numPages();
       expect(numPages).toBe(10);
 
       for (var i = 0; i < numPages - 1; i++) {
         scope.nextPage();
         scope.$digest();
-        expect(scope.output.currentPage).toBe(i+1);
+        expect(scope.data.currentPage).toBe(i+1);
       }
     });
 
     it ('should jump to actual page for humanized page number string', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.venues).toBeDefined();
+      expect(scope.data.currentPage).toBe(0);
 
-      var numPages = scope.output.numPages();
+      var numPages = scope.data.numPages();
       expect(numPages).toBe(10);
 
       scope.jumpToPage('10');
       scope.$digest();
-      expect(scope.output.currentPage).toBe(9);
+      expect(scope.data.currentPage).toBe(9);
     });
 
     it ('should flip to previous page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.venues).toBeDefined();
+      expect(scope.data.currentPage).toBe(0);
 
-      var numPages = scope.output.numPages();
+      var numPages = scope.data.numPages();
       expect(numPages).toBe(10);
 
       // Jump to the last page, so we can test flipping backward
       scope.jumpToPage('10');
       scope.$digest();
-      expect(scope.output.currentPage).toBe(9);
+      expect(scope.data.currentPage).toBe(9);
 
       for (var i = 9; i >= 1; i--) {
         scope.prevPage();
         scope.$digest();
-        expect(scope.output.currentPage).toBe(i-1);
+        expect(scope.data.currentPage).toBe(i-1);
       }
     });
 
     it ('shouldn\'t flip prior to the first page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
 
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.currentPage).toBe(0);
       scope.prevPage();
       scope.$digest();
       // Nothing changed
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.currentPage).toBe(0);
     });
 
     it ('shouldn\'t flip past the last page', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
 
-      expect(scope.output.numPages()).toBe(10);
+      expect(scope.data.numPages()).toBe(10);
       // Jump to the last page
       scope.jumpToPage('10');
       scope.$digest();
-      expect(scope.output.currentPage).toBe(9);
+      expect(scope.data.currentPage).toBe(9);
 
       scope.nextPage();
       scope.$digest();
       // Nothing changed
-      expect(scope.output.currentPage).toBe(9);
+      expect(scope.data.currentPage).toBe(9);
     });
 
     it ('should reset to page 0 given a filter', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
       // Start at 0 as usual
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.currentPage).toBe(0);
 
       // Jump to an arbitrary page
       scope.jumpToPage('10');
       scope.$digest();
-      expect(scope.output.currentPage).toBe(9);
+      expect(scope.data.currentPage).toBe(9);
 
-      scope.input.categorySelector = ['sandwiches'];
+      scope.filterControls.categorySelector = ['sandwiches'];
       scope.$digest();
-      expect(scope.output.groupedResults().length).toBe(3);
+      expect(scope.data.groupedResults().length).toBe(3);
       // Back to 0
-      expect(scope.output.currentPage).toBe(0);
+      expect(scope.data.currentPage).toBe(0);
     });
   });
 
@@ -254,28 +254,26 @@ describe('Controller: MainCtrl', function () {
     it ('should determine paginated results', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
 
-      expect(scope.output.groupedResults().length).toBe(40);
-      expect(scope.input.pageSize).toBe(4);
-      expect(scope.output.numPages()).toBe(10);
+      expect(scope.data.groupedResults().length).toBe(40);
+      expect(scope.data.numPages()).toBe(10);
 
-      expect(scope.output.pagedResults().length).toBe(4);
+      expect(scope.data.pagedResults().length).toBe(4);
     });
 
     it ('should determine paginated results given a filter', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
-      expect(scope.output.venues).toBeDefined();
+      expect(scope.data.venues).toBeDefined();
 
-      scope.input.boroughSelector = ['bronx'];
+      scope.filterControls.boroughSelector = ['bronx'];
       scope.$digest();
 
-      expect(scope.output.groupedResults().length).toBe(10);
-      expect(scope.input.pageSize).toBe(4);
-      expect(scope.output.numPages()).toBe(Math.ceil(10 / 4));
+      expect(scope.data.groupedResults().length).toBe(10);
+      expect(scope.data.numPages()).toBe(Math.ceil(10 / 4));
 
-      expect(scope.output.pagedResults().length).toBe(4);
+      expect(scope.data.pagedResults().length).toBe(4);
     });
   });
 

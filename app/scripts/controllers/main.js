@@ -13,10 +13,11 @@ function casecmp(a, b) {
 }
 
 angular.module('myApp')
-  .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter', '$location', 'SelectedVenue',
-    function ($scope, $http, $resource, $filter, $location, SelectedVenue) {
+  .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter', '$location', 'SelectedVenue', 'FilterControls',
+    function ($scope, $http, $resource, $filter, $location, SelectedVenue, FilterControls) {
 
     // Store shared state on $scope
+    $scope.filterControls = FilterControls;
     $scope.selected = SelectedVenue;
 
     // Source the filters
@@ -25,87 +26,86 @@ angular.module('myApp')
     var nameFilter = $filter('nameFilter');
     var paginateFilter = $filter('paginateFilter');
     
-    $scope.input = {
+    $scope.static = {
       boroughs: ['bronx', 'brooklyn', 'manhattan', 'queens'],
       categories: ['asian', 'mexican', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
-                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort(casecmp)
+                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort(casecmp),
+      pageSize: 20
     };
-
-    $scope.input.pageSize = 20;
     
-    $scope.output = {
+    $scope.data = {
       currentPage: 0,
       venues: {}
     };
 
     // Fetch the venues
-    $scope.output.venues = $resource('api/venues', {}, {}).query();
+    $scope.data.venues = $resource('api/venues', {}, {}).query();
 
     // Setup watch to circle back to 0 everytime groupedResults change
-    $scope.$watch('output.groupedResults().length', function() {
-      $scope.output.currentPage = 0;
+    $scope.$watch('data.groupedResults().length', function() {
+      $scope.data.currentPage = 0;
     });
 
-    $scope.output.numPages = function() {
-      return Math.ceil($scope.output.groupedResults().length / $scope.input.pageSize);
+    $scope.data.numPages = function() {
+      return Math.ceil($scope.data.groupedResults().length / $scope.static.pageSize);
     };
 
-    $scope.output.pages = function() {
-      if (!$scope.output.groupedResults()) {
+    $scope.data.pages = function() {
+      if (!$scope.data.groupedResults()) {
         return {first: ['1'], second: []};
       }
 
       var pages = {first: [], second: []};
       var page;
 
-      for(page = 0; page < $scope.output.currentPage; page++) {
+      for(page = 0; page < $scope.data.currentPage; page++) {
         pages.first.push((page+1).toString());
       }
 
-      for(page = $scope.output.currentPage + 1; page < $scope.output.numPages(); page++) {
+      for(page = $scope.data.currentPage + 1; page < $scope.data.numPages(); page++) {
         pages.second.push((page+1).toString());
       }
 
       return pages;
     };
 
-    $scope.output.groupedResults = function() {
-      var result = boroughFilter($scope.output.venues, $scope.input.boroughSelector);
-      result = categoryFilter(result, $scope.input.categorySelector);
-      result = nameFilter(result, $scope.input.nameSelector);
+    $scope.data.groupedResults = function() {
+      var result = boroughFilter($scope.data.venues, $scope.filterControls.boroughSelector);
+      result = categoryFilter(result, $scope.filterControls.categorySelector);
+      result = nameFilter(result, $scope.filterControls.nameSelector);
 
       return result;
     };
 
-    $scope.output.pagedResults = function() {
-      return paginateFilter($scope.output.groupedResults(), $scope.output.currentPage, $scope.input.pageSize);
+    $scope.data.pagedResults = function() {
+      return paginateFilter($scope.data.groupedResults(), $scope.data.currentPage, $scope.static.pageSize);
     };
 
     $scope.jumpToPage = function(page) {
-      if (page >= 1 && page < $scope.output.pages())
+      if (page >= 1 && page < $scope.data.pages())
       {
-        $scope.output.currentPage = page - 1;
+        $scope.data.currentPage = page - 1;
       }
     };
 
     $scope.prevPage = function () {
-      if ($scope.output.currentPage === 0) {
+      if ($scope.data.currentPage === 0) {
         return;
       }
-      $scope.output.currentPage -= 1;
+      $scope.data.currentPage -= 1;
     };
 
     $scope.nextPage = function () {
-      if ($scope.output.numPages() === 0) {
+      if ($scope.data.numPages() === 0) {
         return;
       }
 
-      if ($scope.output.currentPage === ($scope.output.numPages() - 1)) {
+      if ($scope.data.currentPage === ($scope.data.numPages() - 1)) {
         return;
       }
 
-      $scope.output.currentPage += 1;
+      $scope.data.currentPage += 1;
     };
 
     $scope.changeView = function(view, selected) {
