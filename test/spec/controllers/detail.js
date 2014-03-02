@@ -22,7 +22,10 @@ describe('Controller: DetailCtrl', function () {
 
       $httpBackend = _$httpBackend_;
       scope = $rootScope.$new();
+
+      // Store injected services in outermost describe for access in all tests
       _SelectedVenue = SelectedVenue;
+
       DetailCtrl = $controller('DetailCtrl', {
         $scope: scope,
         $routeParams: {id: '4decca141f6e3ddebe06c5ef'} // for smith canteen
@@ -32,7 +35,7 @@ describe('Controller: DetailCtrl', function () {
 
   describe('SelectedVenue integration', function() {
     it('should set selected to point to shared Service: SelectedVenue', function () {
-      expect(angular.equals(_SelectedVenue, scope.selected)).toBeTruthy();
+      expect(scope.selected).toBe(_SelectedVenue);
     });
   });
 
@@ -50,10 +53,15 @@ describe('Controller: DetailCtrl', function () {
       expect(angular.equals(scope.selected.venue, sourcedVenue)).toBeTruthy();
     });
 
-    it('should furthermore set leaflet center and markers to sourced venue', function() {
+    it('should provide base skeleton for leaflet if venue not set', function() {
       expect(scope.center).toBeDefined();
       expect(scope.markers).toBeDefined();
-      expect(scope.markers.venueMarker).toBeDefined();
+      expect(scope.defaults).toBeDefined();
+    });
+
+    it('should furthermore set leaflet center and markers when venue is set', function() {
+      expect(scope.center).toBeDefined();
+      expect(scope.markers).toBeDefined();
       expect(scope.defaults).toBeDefined();
 
       $httpBackend.expectGET('api/venues/4decca141f6e3ddebe06c5ef').respond(sourcedVenue);
@@ -63,6 +71,8 @@ describe('Controller: DetailCtrl', function () {
 
       expect(scope.center.lat).toBe(scope.selected.venue.location.lat);
       expect(scope.center.lng).toBe(scope.selected.venue.location.lng);
+
+      expect(scope.markers.venueMarker).toBeDefined();
       expect(scope.markers.venueMarker.lat).toBe(scope.selected.venue.location.lat);
       expect(scope.markers.venueMarker.lng).toBe(scope.selected.venue.location.lng);
     });

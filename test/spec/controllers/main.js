@@ -29,28 +29,42 @@ describe('Controller: MainCtrl', function () {
   var MainCtrl,
     scope,
     $httpBackend,
-    venuesMap;
+    venuesMap,
+    _SelectedVenue,
+    _FilterControls;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    jasmine.getJSONFixtures().fixturesPath ='base/test/mock';
-    venuesMap = {
-      bronx: getJSONFixture('bronx.json'),
-      brooklyn: getJSONFixture('brooklyn.json'),
-      manhattan: getJSONFixture('manhattan.json'),
-      queens: getJSONFixture('queens.json')
-    };
-
-    transformToVenueArray(venuesMap, venues);
-
-    $httpBackend = _$httpBackend_;
-    scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
-      $scope: scope
+  beforeEach(function() {
+    module(function($provide) {
+      $provide.value('SelectedVenue', {venue: undefined});
+      $provide.value('FilterControls', {boroughSelector: undefined, categorySelector: undefined, nameSelector: undefined});
     });
-    // All tests written with a pageSize of 4
-    scope.static.pageSize = 4;
-  }));
+
+    inject(function (_$httpBackend_, $controller, $rootScope, SelectedVenue, FilterControls) {
+      jasmine.getJSONFixtures().fixturesPath ='base/test/mock';
+      venuesMap = {
+        bronx: getJSONFixture('bronx.json'),
+        brooklyn: getJSONFixture('brooklyn.json'),
+        manhattan: getJSONFixture('manhattan.json'),
+        queens: getJSONFixture('queens.json')
+      };
+
+      transformToVenueArray(venuesMap, venues);
+
+      $httpBackend = _$httpBackend_;
+      scope = $rootScope.$new();
+
+      // Store injected services in outermost describe for access in all tests
+      _SelectedVenue = SelectedVenue;
+      _FilterControls = FilterControls;
+
+      MainCtrl = $controller('MainCtrl', {
+        $scope: scope
+      });
+      // All tests written with a pageSize of 4
+      scope.static.pageSize = 4;
+    });
+  });
 
   describe('Venue results and filtering', function() {
     it('should handle no venue results', function() {
@@ -274,6 +288,36 @@ describe('Controller: MainCtrl', function () {
       expect(scope.data.numPages()).toBe(Math.ceil(10 / 4));
 
       expect(scope.data.pagedResults().length).toBe(4);
+    });
+  });
+
+  describe('SelectedVenue integration', function() {
+    it('should set selected to point to shared Service: SelectedVenue', function () {
+      expect(scope.selected).toBe(_SelectedVenue);
+    });
+  });
+
+  describe ('FilterControls Integration', function() {
+    it('should set filterControls to point to Service: FilterControls', function () {
+      expect(scope.filterControls).toBe(_FilterControls);
+    });
+
+    it ('should set boroughSelector in FilterControls service', function() {
+      scope.filterControls.boroughSelector = ['bronx'];
+      expect(scope.filterControls).toBe(_FilterControls);
+      expect(scope.filterControls.boroughSelector[0]).toBe('bronx');
+    });
+
+    it ('should set categorySelector in FilterControls service', function() {
+      scope.filterControls.categorySelector = ['thai'];
+      expect(scope.filterControls).toBe(_FilterControls);
+      expect(scope.filterControls.categorySelector[0]).toBe('thai');
+    });
+
+    it ('should set nameSelector in FilterControls service', function() {
+      scope.filterControls.nameSelector = 'Restaurant bakery';
+      expect(scope.filterControls).toBe(_FilterControls);
+      expect(scope.filterControls.nameSelector).toBe('Restaurant bakery');
     });
   });
 
