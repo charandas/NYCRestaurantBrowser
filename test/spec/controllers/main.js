@@ -6,7 +6,7 @@ var venues = [];
 
 function transformToVenueArray(venuesMap, venues) {
   if (venues.length !== 0) {
-    return;
+    return venues;
   }
 
   for (var key in venuesMap) {
@@ -66,7 +66,7 @@ describe('Controller: MainCtrl', function () {
     });
   });
 
-  describe('Venue results and filtering', function() {
+  describe('Venue results and filtering: ', function() {
     it('should handle no venue results', function() {
       $httpBackend.expectGET('api/venues')
         .respond([]);
@@ -156,7 +156,7 @@ describe('Controller: MainCtrl', function () {
     expect(scope.data.groupedResults().length).toBe(3);
   });
 
-  describe('Pillars of pagination', function() {
+  describe('Pillars of pagination: ', function() {
     it ('should start at page 0', function() {
       $httpBackend.expectGET('api/venues').respond(venues);
       $httpBackend.flush();
@@ -291,13 +291,13 @@ describe('Controller: MainCtrl', function () {
     });
   });
 
-  describe('SelectedVenue integration', function() {
+  describe('SelectedVenue integration: ', function() {
     it('should set selected to point to shared Service: SelectedVenue', function () {
       expect(scope.selected).toBe(_SelectedVenue);
     });
   });
 
-  describe ('FilterControls Integration', function() {
+  describe ('FilterControls Integration: ', function() {
     it('should set filterControls to point to Service: FilterControls', function () {
       expect(scope.filterControls).toBe(_FilterControls);
     });

@@ -3,6 +3,10 @@
 angular.module('myApp')
   .controller('DetailCtrl', (['$scope', '$http', '$location', '$resource', '$routeParams', 'SelectedVenue',
       function($scope, $http, $location, $resource, $routeParams, SelectedVenue) {
+
+    // Scroll to top no matter how the controller originates
+    $location.hash('top');
+
     $scope.selected = SelectedVenue;
 
     if (! $scope.selected.venue) {
