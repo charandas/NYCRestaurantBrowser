@@ -1,20 +1,8 @@
 'use strict';
 
-function casecmp(a, b) {
-  if (a.toLowerCase() < b.toLowerCase()) {
-    return -1;
-  }
-
-  if (a.toLowerCase() > b.toLowerCase()) {
-    return 1;
-  }
-
-  return 0;
-}
-
 angular.module('myApp')
-  .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter', '$location', 'SelectedVenue', 'FilterControls',
-    function ($scope, $http, $resource, $filter, $location, SelectedVenue, FilterControls) {
+  .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter', '$location', '$rootScope', 'SelectedVenue', 'FilterControls',
+    function ($scope, $http, $resource, $filter, $location, $rootScope, SelectedVenue, FilterControls) {
 
     // Store shared state on $scope
     $scope.filterControls = FilterControls;
@@ -25,15 +13,15 @@ angular.module('myApp')
     var categoryFilter = $filter('categoryFilter');
     var nameFilter = $filter('nameFilter');
     var paginateFilter = $filter('paginateFilter');
-    
+
     $scope.static = {
       boroughs: ['bronx', 'brooklyn', 'manhattan', 'queens'],
       categories: ['asian', 'mexican', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
-                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort(casecmp),
+                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort($rootScope.utils.casecmp),
       pageSize: 20
     };
-    
+
     $scope.data = {
       currentPage: 0,
       venues: {}

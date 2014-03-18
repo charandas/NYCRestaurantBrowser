@@ -22,6 +22,87 @@ angular.module('myApp', [
       .otherwise({
         redirectTo: '/'
       });
-      
+
     $locationProvider.html5Mode(true);
+  })
+  .run(function($rootScope) {
+    var upcase = function(string) {
+      if (!string) {
+        return '';
+      }
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    var casecmp = function(a, b) {
+      if (a.toLowerCase() < b.toLowerCase()) {
+        return -1;
+      }
+
+      if (a.toLowerCase() > b.toLowerCase()) {
+        return 1;
+      }
+
+      return 0;
+    };
+
+    var filterByBorough = function(venues, boroughs) {
+      if (!boroughs || (boroughs.length === 0)) {
+        return venues;
+      }
+
+      return venues.filter(function(venue) {
+        for (var i = 0; i < boroughs.length; i++) {
+          if (venue.location.city === upcase(boroughs[i])) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+    };
+
+    var filterByCategory = function(venues, categories) {
+      if (!categories || (categories.length === 0)) {
+        return venues;
+      }
+
+      return venues.filter(function(venue) {
+        for (var i = 0; i < categories.length; i++) {
+          if (venue.categories[0].shortName.toLowerCase() === categories[i].toLowerCase()) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+    };
+
+    var filterByName = function(venues, name) {
+      if (!name || name.length < 3) {
+        return venues;
+      }
+
+      var names = name.split(' ');
+
+      return venues.filter(function(venue) {
+        for (var i = 0; i < names.length; i++) {
+          var lhs = venue.name.toLowerCase();
+          var rhs = names[i].toLowerCase();
+          if(lhs.indexOf(rhs) !== -1) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+    };
+
+
+    $rootScope.utils = {
+      upcase: upcase,
+      casecmp: casecmp,
+      filterByBorough: filterByBorough,
+      filterByCategory: filterByCategory,
+      filterByName: filterByName
+    };
   });
