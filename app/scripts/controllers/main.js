@@ -41,20 +41,14 @@ angular.module('myApp')
 
     $scope.data.pages = function() {
       if (!$scope.data.groupedResults()) {
-        return {first: ['1'], second: []};
+        return ['1'];
       }
 
-      var pages = {first: [], second: []};
-      var page;
+      var pages = [];
 
-      for(page = 0; page < $scope.data.currentPage; page++) {
-        pages.first.push((page+1).toString());
+      for(var page = 0; page < $scope.data.numPages(); page++) {
+        pages.push((page+1).toString());
       }
-
-      for(page = $scope.data.currentPage + 1; page < $scope.data.numPages(); page++) {
-        pages.second.push((page+1).toString());
-      }
-
       return pages;
     };
 
@@ -71,7 +65,7 @@ angular.module('myApp')
     };
 
     $scope.jumpToPage = function(page) {
-      if (page >= 1 && page < $scope.data.pages())
+      if (page >= 1 && page <= $scope.data.numPages())
       {
         $scope.data.currentPage = page - 1;
       }

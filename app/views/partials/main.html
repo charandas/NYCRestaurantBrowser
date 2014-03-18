@@ -9,13 +9,7 @@
   <p ng-if="data.pagedResults().length === 0">Found no results for specified criteria.</p>
   <ul class="pagination" ng-if="data.pagedResults().length !== 0">
       <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
-      <li ng-repeat="page in data.pages().first">
-        <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
-      </li>
-
-      <li class="active"><a href="#">{{data.currentPage + 1}}</a></li>
-
-      <li ng-repeat="page in data.pages().second">
+      <li ng-repeat="page in data.pages()" ng-class="{active: $index==(data.currentPage)}">
         <a ng-click="jumpToPage(page)" href="#">{{page}}</a>
       </li>
       <li><a ng-click="nextPage()" href="#">&raquo;</a></li>
@@ -43,7 +37,7 @@
     <label for='categorySelector' class="col-sm-3 control-label">Category</label>
     <div class="col-sm-9">
     <select class="form-control"
-            multiple 
+            multiple
             chosen
             allow-single-deselect="true"
             name="categorySelector"
@@ -60,7 +54,7 @@
     <div class='col-sm-9'>
     <input class="form-control" data-ng-model="filterControls.nameSelector" name='nameSelector' type='text' placeholder='Name' />
     </div>
-  </div> 
+  </div>
 </form>
 
 <div class="venue-wrap">
@@ -74,5 +68,3 @@
     </div>
   </div>
 </div>
-
-
