@@ -1,10 +1,11 @@
-describe("page header meets criteria", function(){
-  var ptor = protractor.getInstance();
+describe('page header:', function() {
+  before(function() {
+    return casper.start('http://localhost:9000')
+  })
 
-  describe("index", function(){
-    it("should display the correct title", function(){
-      ptor.get('/#');
-      expect(ptor.getTitle()).toBe("NYCRestaurantBrowser");
-    });
-  });
-});
+  it('should match title', function() {
+    casper.then(function() {
+      'NYCRestaurantBrowser'.should.matchTitle
+    })
+  })
+})

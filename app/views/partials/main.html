@@ -5,8 +5,8 @@
 </div>
 
 <div class="row text-center">
-  <p ng-if="data.pagedResults().length !== 0">Showing {{data.currentPage*static.pageSize+1}}-{{(data.currentPage*static.pageSize+1)+data.pagedResults().length-1}} of {{data.groupedResults().length}} results</p>
-  <p ng-if="data.pagedResults().length === 0">Found no results for specified criteria.</p>
+  <p id="results-count" ng-if="data.pagedResults().length !== 0">Showing {{data.currentPage*static.pageSize+1}}-{{(data.currentPage*static.pageSize+1)+data.pagedResults().length-1}} of {{data.groupedResults().length}} results</p>
+  <p id="no-results" ng-if="data.pagedResults().length === 0">Found no results for specified criteria.</p>
   <ul class="pagination" ng-if="data.pagedResults().length !== 0">
       <li><a ng-click="prevPage()" href="#">&laquo;</a></li>
       <li ng-repeat="page in data.pages()" ng-class="{active: $index==(data.currentPage)}">
@@ -16,12 +16,11 @@
   </ul>
 </div>
 
-<form class="form-horizontal" role="form">
+<form id="filter-form" class="form-horizontal" role="form">
   <div class='form-group'>
     <label for='boroughSelector' class="col-sm-3 control-label">Borough</label>
     <div class="col-sm-9">
     <select class="form-control"
-            chosen
             multiple
             allow-single-deselect="true"
             name="boroughSelector"
