@@ -26,7 +26,7 @@
             name="boroughSelector"
             data-placeholder="Borough"
             data-ng-model="filterControls.boroughSelector"
-            ng-options="b as b | upcase for b in static.boroughs">
+            ng-options="b as (b | upcase) for b in static.boroughs">
       <option value=""></option>
     </select>
     </div>

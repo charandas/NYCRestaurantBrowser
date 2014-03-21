@@ -3,6 +3,16 @@ describe('search:', function() {
     return casper.start('http://localhost:9000')
   })
 
+  beforeEach(function() {
+    casper.then(function(){
+      this.fill('form#filter-form', {
+        "boroughSelector": [],
+        "categorySelector": [],
+        "nameSelector": ""
+      }, true);
+    })
+  })
+
   describe('filters:', function() {
     it('should have borough choices in page', function() {
 
@@ -41,7 +51,7 @@ describe('search:', function() {
       })
     })
 
-    it ('should filter by borough', function() {
+    it ('should filter by a single borough', function() {
       var selector = 'select[name="boroughSelector"]';
 
       casper.then(function(){
@@ -49,32 +59,28 @@ describe('search:', function() {
       })
 
       casper.then(function() {
-        this.evaluate(function(option, sel) {
-          var options = document.querySelectorAll(sel + " option");
+        this.fill('form#filter-form', {
+          "boroughSelector": ["3"]
+        }, true);
 
-          if (option < options.length) {
-            var ret = (sel + ' option[value="'+ option.toString() +'"]');
-            var el = document.querySelector(ret);
-            el.selected = true;
-            ['change', 'input'].forEach(function(name) {
-              var event = document.createEvent("HTMLEvents");
-              event.initEvent(name, true, true);
-              el.dispatchEvent(event);
-            });
-          }
-          return true;
-        }, 3, selector);
+        'p#results-count'.should.have.text('Showing 1-10 of 10 results')
+      })
+    })
 
-        casper.then(function() {
-          'p#results-count'.should.have.text('Showing 1-10 of 10 results')
-        })
+    it('should filter by multiple boroughs', function() {
+      casper.then(function(){
+        this.fill('form#filter-form', {
+          "boroughSelector": ["0", "1", "2"]
+        }, true);
+
+        'p#results-count'.should.have.text('Showing 1-20 of 30 results')
       })
     })
 
     it('should filter by name', function() {
       casper.then(function(){
         this.fill('form#filter-form', {
-          "nameSelector": "Thai"
+          "nameSelector": "thai" //Thai
         }, true);
         'p#results-count'.should.have.text('Showing 1-1 of 1 results')
       })
