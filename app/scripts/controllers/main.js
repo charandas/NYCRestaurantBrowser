@@ -18,7 +18,7 @@ angular.module('myApp')
       boroughs: ['bronx', 'brooklyn', 'manhattan', 'queens'],
       categories: ['asian', 'mexican', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
-                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort($rootScope.utils.casecmp),
+                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'],
       pageSize: 20
     };
 

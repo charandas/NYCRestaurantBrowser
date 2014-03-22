@@ -1,29 +1,31 @@
+'use strict';
+
 describe('search:', function() {
   before(function() {
-    return casper.start('http://localhost:9000')
-  })
+    return casper.start('http://localhost:9000');
+  });
 
   beforeEach(function() {
     casper.then(function(){
       this.fill('form#filter-form', {
-        "boroughSelector": [],
-        "categorySelector": [],
-        "nameSelector": ""
+        'boroughSelector': [],
+        'categorySelector': [],
+        'nameSelector': ''
       }, true);
-    })
-  })
+    });
+  });
 
   describe('filters:', function() {
     it('should have borough choices in page', function() {
 
       casper.then(function() {
-        'Borough'.should.be.textInDOM
-        'Bronx'.should.be.textInDOM
-        'Brooklyn'.should.be.textInDOM
-        'Manhattan'.should.be.textInDOM
-        'Queens'.should.be.textInDOM
-      })
-    })
+        'Borough'.should.be.textInDOM;
+        'Bronx'.should.be.textInDOM;
+        'Brooklyn'.should.be.textInDOM;
+        'Manhattan'.should.be.textInDOM;
+        'Queens'.should.be.textInDOM;
+      });
+    });
 
     it('should have category choices in page', function() {
       var upcase = function(string) {
@@ -37,53 +39,47 @@ describe('search:', function() {
              'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
              'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'];
       casper.then(function() {
-        'Category'.should.be.textInDOM
+        'Category'.should.be.textInDOM;
         for (var i = 0; i < categories.length; i++) {
-          upcase(categories[i]).should.be.textInDOM
+          upcase(categories[i]).should.be.textInDOM;
         }
-      })
-    })
+      });
+    });
 
     it('should have name selector in page', function() {
 
       casper.then(function() {
-        'Name'.should.be.textinDOM
-      })
-    })
-
-    it ('should filter by a single borough', function() {
-      var selector = 'select[name="boroughSelector"]';
-
-      casper.then(function(){
-        selector.should.be.inDOM.and.be.visible
-      })
-
-      casper.then(function() {
-        this.fill('form#filter-form', {
-          "boroughSelector": ["3"]
-        }, true);
-
-        'p#results-count'.should.have.text('Showing 1-10 of 10 results')
-      })
-    })
+        'Name'.should.be.textinDOM;
+      });
+    });
 
     it('should filter by multiple boroughs', function() {
       casper.then(function(){
         this.fill('form#filter-form', {
-          "boroughSelector": ["0", "1", "2"]
+          'boroughSelector': ['0', '1', '2']
         }, true);
 
-        'p#results-count'.should.have.text('Showing 1-20 of 30 results')
-      })
-    })
+        'p#results-count'.should.have.text('Showing 1-20 of 30 results');
+      });
+    });
+
+    it('should filter by multiple categories', function() {
+      casper.then(function(){
+        this.fill('form#filter-form', {
+          'categorySelector': ['0', '2'] // American, Bakery
+        }, true);
+
+        'p#results-count'.should.have.text('Showing 1-6 of 6 results');
+      });
+    });
 
     it('should filter by name', function() {
       casper.then(function(){
         this.fill('form#filter-form', {
-          "nameSelector": "thai" //Thai
+          'nameSelector': 'thai' //Thai
         }, true);
-        'p#results-count'.should.have.text('Showing 1-1 of 1 results')
-      })
-    })
-  })
-})
+        'p#results-count'.should.have.text('Showing 1-1 of 1 results');
+      });
+    });
+  });
+});

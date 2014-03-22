@@ -1,11 +1,13 @@
+'use strict';
+
 describe('page header:', function() {
   before(function() {
-    return casper.start('http://localhost:9000')
-  })
+    return casper.start('http://localhost:9000');
+  });
 
   it('should match title', function() {
     casper.then(function() {
-      'NYCRestaurantBrowser'.should.matchTitle
-    })
-  })
-})
+      'NYCRestaurantBrowser'.should.matchTitle;
+    });
+  });
+});

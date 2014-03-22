@@ -33,18 +33,6 @@ angular.module('myApp', [
       return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
-    var casecmp = function(a, b) {
-      if (a.toLowerCase() < b.toLowerCase()) {
-        return -1;
-      }
-
-      if (a.toLowerCase() > b.toLowerCase()) {
-        return 1;
-      }
-
-      return 0;
-    };
-
     var filterByBorough = function(venues, boroughs) {
       if (!boroughs || (boroughs.length === 0)) {
         return venues;
@@ -100,7 +88,6 @@ angular.module('myApp', [
 
     $rootScope.utils = {
       upcase: upcase,
-      casecmp: casecmp,
       filterByBorough: filterByBorough,
       filterByCategory: filterByCategory,
       filterByName: filterByName
