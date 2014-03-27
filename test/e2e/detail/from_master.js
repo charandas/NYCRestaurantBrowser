@@ -7,7 +7,7 @@ describe('detail:', function() {
 
   describe('Navigate from master:', function() {
     it('should display detail for clicked restaurant', function() {
-      var venue = selectXPath('//a[text()="Hard Rock Cafe Yankee Stadium"]');
+      var venue = xpath('//a[text()="Hard Rock Cafe Yankee Stadium"]');
       casper.then(function() {
         casper.waitForSelector(venue,
           function success() {

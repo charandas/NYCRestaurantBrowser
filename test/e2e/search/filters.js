@@ -5,17 +5,21 @@ describe('search:', function() {
     return casper.start('http://localhost:9000');
   });
 
-  beforeEach(function() {
-    casper.then(function(){
-      this.fill('form#filter-form', {
-        'boroughSelector': [],
-        'categorySelector': [],
-        'nameSelector': ''
-      }, true);
-    });
-  });
-
   describe('filters:', function() {
+    beforeEach(function() {
+      casper.waitForSelector('form#filter-form',
+        function success() {
+          casper.then(function(){
+            this.fill('form#filter-form', {
+              'boroughSelector': [],
+              'categorySelector': [],
+              'nameSelector': ''
+            }, true);
+          });
+        }
+      );
+    });
+
     it('should have borough choices in page', function() {
 
       casper.then(function() {

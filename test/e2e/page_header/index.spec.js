@@ -6,8 +6,10 @@ describe('page header:', function() {
   });
 
   it('should match title', function() {
-    casper.then(function() {
-      'NYCRestaurantBrowser'.should.matchTitle;
+    casper.waitForSelector('.container', function() {
+      casper.then(function() {
+        'NYCRestaurantBrowser'.should.matchTitle;
+      });
     });
   });
 });
