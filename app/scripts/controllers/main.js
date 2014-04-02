@@ -13,12 +13,13 @@ angular.module('myApp')
     var categoryFilter = $filter('categoryFilter');
     var nameFilter = $filter('nameFilter');
     var paginateFilter = $filter('paginateFilter');
+    var casecmp = $filter('casecmp');
 
     $scope.static = {
       boroughs: ['bronx', 'brooklyn', 'manhattan', 'queens'],
       categories: ['asian', 'mexican', 'sandwiches', 'thai', 'american', 'cuban', 'italian', 'diner', 'seafood',
                    'south american', 'café', 'BBQ', 'ice cream', 'gastropub', 'bakery', 'greek', 'ramen / noodles',
-                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'],
+                   'vegetarian / vegan', 'latin american', 'new american', 'french', 'pizza'].sort(casecmp),
       pageSize: 20
     };
 

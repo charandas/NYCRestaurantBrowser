@@ -1,6 +1,19 @@
 'use strict';
 
 angular.module('myApp')
+.filter('casecmp', function(){
+  return function(a, b) {
+    if (a.toLowerCase() < b.toLowerCase()) {
+     return -1;
+    }
+
+    if (a.toLowerCase() > b.toLowerCase()) {
+     return 1;
+    }
+
+    return 0;
+  };
+})
 .filter('upcase', function($rootScope) {
   return $rootScope.utils.upcase;
 })

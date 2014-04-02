@@ -43,7 +43,7 @@
             name="categorySelector"
             data-placeholder="Category"
             data-ng-model="filterControls.categorySelector"
-            ng-options="c as c | upcase for c in static.categories | orderBy:'toString()'">
+            ng-options="c as c | upcase for c in static.categories">
       <option value=""></option>
     </select>
     </div>
