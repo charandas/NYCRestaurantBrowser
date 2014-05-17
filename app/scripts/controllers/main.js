@@ -1,5 +1,10 @@
 'use strict';
 
+require('../filters');
+require('../services/selectedvenue');
+require('../services/filtercontrols');
+
+
 angular.module('myApp')
   .controller('MainCtrl', (['$scope', '$http', '$resource', '$filter', '$location', '$rootScope', 'SelectedVenue', 'FilterControls',
     function ($scope, $http, $resource, $filter, $location, $rootScope, SelectedVenue, FilterControls) {

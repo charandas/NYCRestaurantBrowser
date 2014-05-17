@@ -1,4 +1,7 @@
-'use strict';
+//'use strict';
+
+var angular = require('angular');
+var ngResource = require('angular-resource');
 
 angular.module('myApp', [
   'ngCookies',
@@ -26,6 +29,7 @@ angular.module('myApp', [
     $locationProvider.html5Mode(true);
   })
   .run(function($rootScope) {
+
     var upcase = function(string) {
       if (!string) {
         return '';
@@ -93,3 +97,7 @@ angular.module('myApp', [
       filterByName: filterByName
     };
   });
+
+  require('./controllers/main');
+  require('./controllers/detail');
+  require('./controllers/navbar');

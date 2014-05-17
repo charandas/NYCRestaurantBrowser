@@ -1,5 +1,6 @@
 # Bower components
 app/bower_components
+app/bundle
 
 # Node modules
 node_modules

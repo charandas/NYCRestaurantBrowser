@@ -1,5 +1,7 @@
 'use strict';
 
+require('../services/selectedvenue');
+
 angular.module('myApp')
   .controller('DetailCtrl', (['$scope', '$http', '$location', '$resource', '$routeParams', 'SelectedVenue',
       function($scope, $http, $location, $resource, $routeParams, SelectedVenue) {
@@ -55,7 +57,7 @@ angular.module('myApp')
         }
       });
     }
-    
+
     $scope.goBack = function() {
       $scope.selected.venue = undefined;
       $location.path('/');
