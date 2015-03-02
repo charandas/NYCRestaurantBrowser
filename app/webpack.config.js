@@ -25,7 +25,7 @@ var config = {
             // against the path
             // "loader" tells webpack what loaders should be applied
             { test: /[\/\\]angular\.js$/, loader: "exports?window.angular" }
-            //{ test: /[\/]angular-resource\.js$/, loader: "exports?ngResource" }
+            { test: /[\/]angular-resource\.js$/, loader: 'exports?angular.module(\'ngResource\')' }
         ]
     }
 };
